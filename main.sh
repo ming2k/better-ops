@@ -14,6 +14,7 @@ fi
 
 (
     root_path=$(dirname "$(readlink -f "$0")")
+    asset_path=$(dirname "$(readlink -f "$0")")/asset
     script_path=$root_path/script
     lib_path=$root_path/lib
 
@@ -23,9 +24,9 @@ fi
         fi
     done
 
-    . "$script_path"/adjust-env.sh
+    . "$script_path"/install-pkg.sh
+    . "$script_path"/config-bash.sh
     . "$script_path"/config-vim.sh
-    . "$script_path"/config-command-completion.sh
 
 )
 
