@@ -10,4 +10,6 @@ replace_line $sshd_config_path "PermitRootLogin" "PermitRootLogin yes" || sudo e
 replace_line $sshd_config_path "ClientAliveInterval" "ClientAliveInterval 120" || sudo echo "ClientAliveInterval 120" >> $sshd_config_path
 replace_line $sshd_config_path "ClientAliveCountMax" "ClientAliveCountMax 2" || sudo echo "ClientAliveCountMax 2" >> $sshd_config_path
 
+sudo systemctl restart sshd && log "sshd restarted"
+
 log "Finish"
