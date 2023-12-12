@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo rm /etc/bash.bashrc && sudo cp $asset_path/bash.bashrc /etc/bash.bashrc
+sudo rm /etc/bash.bashrc
+sudo cp $asset_path/bash.bashrc /etc/bash.bashrc
 
 # backup .bashrc
 mv ~/.bashrc ~/.bashrc.bak && touch ~/.bashrc
