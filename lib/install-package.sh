@@ -10,7 +10,7 @@ install_package() {
 
     # 检查当前用户是否为 root 用户
     if [ "$EUID" -ne 0 ]; then
-        echo "Password is asked to install package."
+        log "Password is asked to install package."
     fi
 
     echo "Trying to update source..."

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+print_with_border "CONFIG BASH"
+
 sudo rm /etc/bash.bashrc
 sudo cp $asset_path/bash.bashrc /etc/bash.bashrc
 
@@ -18,3 +20,4 @@ cat << EOF >> ~/.bashrc
     . /usr/share/bash-completion/bash_completion
 EOF
 
+log "Finish"
