@@ -18,6 +18,7 @@ fi
         fi
     done
 
+    . "$script_path"/config-network.sh
     . "$script_path"/install-pkg.sh
     . "$script_path"/config-bash.sh
     . "$script_path"/config-vim.sh
