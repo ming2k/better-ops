@@ -13,13 +13,16 @@ install_package() {
         log "Password is asked to install package."
     fi
 
-    echo "Trying to update source..."
+    log "Trying to update source..."
     case "$1" in
         "apt")
             sudo apt-get update
             ;;
         "yum")
             sudo yum makecache
+            ;;
+        "pacman")
+            sudo pacman -Syyu
             ;;
         *)
             echo "The package management tool is not supported."
@@ -35,6 +38,9 @@ install_package() {
             ;;
         "yum")
             sudo yum install -y "$2"
+            ;;
+        "pacman")
+            sudo pacman -S "$2"
             ;;
     esac
 

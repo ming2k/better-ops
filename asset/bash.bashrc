@@ -8,8 +8,6 @@
 
 [[ $DISPLAY ]] && shopt -s checkwinsize
 
-export EDITOR=vim
-
 PS1="\[\033[1;34m\]\u\[\033[0m\]@$\[\033[1;33m\]\h\[\033[0m\]:\[\033[1;32m\]\W\[\033[0m\]\\$ "
 
 function bash_prompt {
@@ -17,3 +15,7 @@ function bash_prompt {
 }
 
 PROMPT_COMMAND=bash_prompt
+
+alias ls='ls --color=auto'
+
+
