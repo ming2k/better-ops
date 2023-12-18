@@ -1,5 +1,9 @@
 Port 22
 
+UsePAM yes
+
+Subsystem sftp /usr/lib/openssh/sftp-server
+
 PasswordAuthentication no
 PermitRootLogin yes
 ClientAliveInterval 120
