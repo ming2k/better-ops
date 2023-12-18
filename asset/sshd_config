@@ -1,0 +1,6 @@
+Port 22
+
+PasswordAuthentication no
+PermitRootLogin yes
+ClientAliveInterval 120
+ClientAliveCountMax 2
