@@ -1,58 +1,44 @@
-syntax on
 set encoding=utf-8
-set showcmd
-"keep the format for pasting action
-set paste
-"forbid indent when adding comments
-"set pastetoggle
-"set mouse=a
-set relativenumber
 
-"set autoindent
-"set cindent
-"set smartindent
-
-" Automatically convert tab to spaces
-" set noexpandtab
+" '\t' displays space width
+set tabstop=4
 set expandtab
+" <Tab> and <BS> operate space width
+set softtabstop=4
+" expand tab into spaces
+set smarttab
 
-" how many columns of whitespace is a \t char worth?
-set tabstop=2
-" how many columns of whitespace is a tab keypress or a backspace keypress worth?
-set softtabstop=2
-" how many columns of whitespace a “level of indentation” is worth?
-set shiftwidth=2
+set autoindent
+set cindent
+" indent width
+set shiftwidth=4
+set smartindent
+
+set pastetoggle=<F2>
+nnoremap <F2> :set invpaste paste?<CR>
+
+"nnoremap <C-k> :set invpaste paste?<CR>
+"set nopaste
 
 set scrolloff=8
 
-" Open a new buffer, hide instead of close
-set hidden
-
-" Display tab and space
-"set list
-
-" Set the time(ms) that wait for next key of leader
-set timeoutlen=1000
-
-set cmdheight=1
-
-set number
-" Relative number of line
-"set relativenumber
-
-" Fold method
-"set fdm=indent
-
-" Show blocked text in one line or not
+syntax on
 set wrap
 
-set updatetime=300
+set nolist
+"set list
+set listchars=eol:⮐,tab:-->,trail:·
+"set listchars=eol:!,tab:-->,trail:.
 
-"set signcolumn=yes
+set showcmd
+set cmdheight=1
+"set showmode
 
-" 0: never
-" 1: only if there are at least two windows
-" 2: always
+set number
+set relativenumber
+
+" status line appearance
+" 0: never; 1: only if there are at least two windows; 2: always
 set laststatus=2
 set statusline=%<
 "full path
@@ -64,14 +50,28 @@ set statusline+=%=
 set statusline+=%l:%c             "current line
 set statusline+=\ 0x%B          "character under cursor
 
+" set the appearance of different mode
 if &term =~ '^xterm'
   " enter vim
   autocmd VimEnter * silent !echo -ne "\e[1 q"
   " leave vim
   autocmd VimLeave * silent !echo -ne "\e[ q"
-  
+
   " Start Insert
   let &t_SI .= "\e[5 q"
   " End Insert
   let &t_EI .= "\e[1 q"
 endif
+
+set mouse=a
+
+" fold method
+"set fdm=indent
+
+" Open a new buffer, hide instead of close
+set hidden
+
+" Set the time(ms) that wait for next key of leader
+set timeoutlen=1000
+
+set updatetime=300
