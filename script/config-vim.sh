@@ -8,10 +8,10 @@ if [ "$(get_distribution)" = "debian" ]; then
     vimrc_path=/etc/vim/vimrc
     sudo rm $vimrc_path
     # Add the os-related config
-    sudo cat 'runtime! debian.vim' > $vimrc_path
-    sudo cat $asset_path/vimrc > $vimrc_path
+    sudo echo -e "\nruntime! debian.vim" > $vimrc_path
+    sudo cat $asset_path/vimrc >> $vimrc_path
 
-    sudo echo -e "\nexport EDITOR=vim" > /etc/bash.bashrc
+    sudo echo -e "\nexport EDITOR=vim" >> /etc/bash.bashrc
 
     log "Finish"
 fi

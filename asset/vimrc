@@ -10,17 +10,16 @@ set softtabstop=4
 " expand tab into spaces
 set smarttab
 
-set autoindent
-set cindent
+"set autoindent
+"set cindent
 " indent width
-set shiftwidth=4
-set smartindent
+"set shiftwidth=4
+"set smartindent
+
+autocmd FileType json setlocal ts=2 sts=2 sw=2 expandtab
 
 set pastetoggle=<F2>
 nnoremap <F2> :set invpaste paste?<CR>
-
-"nnoremap <C-k> :set invpaste paste?<CR>
-"set nopaste
 
 set scrolloff=8
 
