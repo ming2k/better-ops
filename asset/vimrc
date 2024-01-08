@@ -1,5 +1,7 @@
 set encoding=utf-8
 
+syntax on
+
 " '\t' displays space width
 set tabstop=4
 set expandtab
@@ -22,7 +24,6 @@ nnoremap <F2> :set invpaste paste?<CR>
 
 set scrolloff=8
 
-syntax on
 set wrap
 
 set nolist

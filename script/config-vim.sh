@@ -1,16 +1,18 @@
 #!/bin/bash
 
-print_with_border "CONFIG VIM"
-
+print_with_border "SETTING VIM"
 
 # app should be installed
 if [ "$(get_distribution)" = "debian" ]; then
     install_package apt vim
+    vimrc_path=/etc/vim/vimrc
+    sudo rm $vimrc_path
+    # Add the os-related config
+    sudo cat 'runtime! debian.vim' > $vimrc_path
+    sudo cat $asset_path/vimrc > $vimrc_path
+
+    sudo echo -e "\nexport EDITOR=vim" > /etc/bash.bashrc
+
+    log "Finish"
 fi
 
-sudo rm /etc/vimrc
-sudo cp $asset_path/vimrc /etc/vimrc
-
-sudo echo -e "\nexport EDITOR=vim" >> /etc/bash.bashrc
-
-log "Finish"

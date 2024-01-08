@@ -2,7 +2,7 @@
 
 # DON'T MDODIFY THE HOME BASHRC, LEFT THE CHOICE TO USER 
 
-print_with_border "CONFIG BASH"
+print_with_border "SETTING BASH"
 
 sudo mv /etc/bash.bashrc /etc/bash.bashrc.bak
 sudo cp $asset_path/bash.bashrc /etc/bash.bashrc

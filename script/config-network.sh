@@ -1,6 +1,6 @@
 #!/bin/bash
 
-print_with_border "CONFIG NETWORK"
+print_with_border "SETTING NETWORK"
 
 hostname=$(hostname)
 file_path=/etc/hosts
