@@ -16,8 +16,4 @@ function bash_prompt {
 
 PROMPT_COMMAND=bash_prompt
 
-export EDITOR=vim
-
 alias ls='ls --color=auto'
-
-

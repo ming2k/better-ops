@@ -10,15 +10,16 @@ sudo cp $asset_path/bash.bashrc /etc/bash.bashrc
 # backup .bashrc
 mv ~/.bashrc ~/.bashrc.bak && touch ~/.bashrc
 
-if [ "$(get_distribution)" = "debian" ]; then
-    echo "Tring to insatll \"bash-completion\"..."
-    install_package apt bash-completion
-fi
-
+# bash complete
+install_package apt bash-completion
 sudo cat << EOF >> /etc/bash.bashrc
 
 [[ \$PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
     . /usr/share/bash-completion/bash_completion
 EOF
+log "Successfully configured bash-completion."
 
-log "Finish"
+# bash fzf
+install_package apt fzf
+echo -e "\nsource /usr/share/doc/fzf/examples/key-bindings.bash"
+log "Successfully configured fzf."

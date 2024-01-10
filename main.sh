@@ -9,8 +9,10 @@ fi
 (
     root_path=$(dirname "$(readlink -f "$0")")
     asset_path=$root_path/asset
-    script_path=$root_path/script
     lib_path=$root_path/lib
+
+    script_path=$root_path/script
+    debian_script_path=$script_path/debian
 
     for file in "$lib_path"/*.sh; do
         if [ -f "$file" ]; then
@@ -18,11 +20,7 @@ fi
         fi
     done
 
-    . "$script_path"/config-network.sh
-    . "$script_path"/install-pkg.sh
-    . "$script_path"/config-bash.sh
-    . "$script_path"/config-vim.sh
-    . "$script_path"/config-ssh.sh
+    . "$script_path"/release.sh
 
 )
 

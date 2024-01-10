@@ -13,37 +13,34 @@ install_package() {
         log "Password is asked to install package."
     fi
 
-    log "Trying to update source..."
     case "$1" in
         "apt")
-            sudo apt-get update
+            sudo apt-get update > /dev/null
             ;;
         "yum")
-            sudo yum makecache
+            sudo yum makecache > /dev/null
             ;;
         "pacman")
-            sudo pacman -Syyu
+            sudo pacman -Syyu > /dev/null
             ;;
         *)
             echo "The package management tool is not supported."
             return 1
             ;;
     esac
+    log "The repository was updated."
 
-    echo "Trying to insatll \"$2\"..."
     # 安装软件包
     case "$1" in
         "apt")
-            sudo apt-get install -y "$2"
+            sudo apt-get install -y "$2" > /dev/null
             ;;
         "yum")
-            sudo yum install -y "$2"
+            sudo yum install -y "$2" > /dev/null
             ;;
         "pacman")
-            sudo pacman -S "$2"
+            sudo pacman -S "$2" > /dev/null
             ;;
     esac
-
-    # 返回状态码
-    return $?
+    echo "\"$2\"... was installed."
 }
