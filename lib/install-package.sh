@@ -42,5 +42,5 @@ install_package() {
             sudo pacman -S "$2" > /dev/null
             ;;
     esac
-    echo "\"$2\"... was installed."
+    log "\"$2\"... was installed."
 }
