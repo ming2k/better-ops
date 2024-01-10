@@ -13,15 +13,21 @@ install_package() {
         log "Password is asked to install package."
     fi
 
+    if
+
     case "$1" in
         "apt")
+            dpkg -l | grep -q -w "^ii  $2 " && log "$2 has installed." & return 0
             sudo apt-get update > /dev/null
+            sudo apt-get install -y "$2" > /dev/null
             ;;
         "yum")
             sudo yum makecache > /dev/null
+            sudo yum install -y "$2" > /dev/null
             ;;
         "pacman")
             sudo pacman -Syyu > /dev/null
+            sudo pacman -S "$2" > /dev/null
             ;;
         *)
             echo "The package management tool is not supported."
@@ -30,17 +36,5 @@ install_package() {
     esac
     log "The repository was updated."
 
-    # 安装软件包
-    case "$1" in
-        "apt")
-            sudo apt-get install -y "$2" > /dev/null
-            ;;
-        "yum")
-            sudo yum install -y "$2" > /dev/null
-            ;;
-        "pacman")
-            sudo pacman -S "$2" > /dev/null
-            ;;
-    esac
-    log "\"$2\"... was installed."
+    log "\"$2\" was installed."
 }
