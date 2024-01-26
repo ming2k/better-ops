@@ -1,0 +1,77 @@
+set encoding=utf-8
+
+syntax on
+
+" '\t' displays space width
+set tabstop=4
+set expandtab
+" <Tab> and <BS> operate space width
+set softtabstop=4
+" expand tab into spaces
+set smarttab
+
+"set autoindent
+"set cindent
+" indent width
+"set shiftwidth=4
+"set smartindent
+
+autocmd FileType json setlocal ts=2 sts=2 sw=2 expandtab
+
+set pastetoggle=<F2>
+nnoremap <F2> :set invpaste paste?<CR>
+
+set scrolloff=8
+
+set wrap
+
+set nolist
+"set list
+set listchars=eol:⮐,tab:-->,trail:·
+"set listchars=eol:!,tab:-->,trail:.
+
+set showcmd
+set cmdheight=1
+"set showmode
+
+set number
+set relativenumber
+
+" status line appearance
+" 0: never; 1: only if there are at least two windows; 2: always
+set laststatus=2
+set statusline=%<
+"full path
+set statusline+=%F            
+set statusline+=\ %m
+"modified flag
+" Separation point between left and right aligned items.
+set statusline+=%=
+set statusline+=%l:%c             "current line
+set statusline+=\ 0x%B          "character under cursor
+
+" set the appearance of different mode
+if &term =~ '^xterm'
+  " enter vim
+  autocmd VimEnter * silent !echo -ne "\e[1 q"
+  " leave vim
+  autocmd VimLeave * silent !echo -ne "\e[ q"
+
+  " Start Insert
+  let &t_SI .= "\e[5 q"
+  " End Insert
+  let &t_EI .= "\e[1 q"
+endif
+
+set mouse=a
+
+" fold method
+"set fdm=indent
+
+" Open a new buffer, hide instead of close
+set hidden
+
+" Set the time(ms) that wait for next key of leader
+set timeoutlen=1000
+
+set updatetime=300
