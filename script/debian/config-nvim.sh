@@ -15,6 +15,6 @@ vimrc_path=/usr/share/nvim/sysinit.vim
 #EOF
 
 sudo rm $vimrc_path
-sudo cat $asset_path/sysinit > $vimrc_path
+sudo cat $asset_path/sysinit.vim > $vimrc_path
 
 sudo echo -e "\nexport EDITOR=nvim" >> /etc/bash.bashrc
