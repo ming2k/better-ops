@@ -13,4 +13,3 @@ sudo cat $asset_path/vimrc >> $vimrc_path
 log "Successfully configured vim."
 
 sudo echo -e "\nexport EDITOR=vim" >> /etc/bash.bashrc
-

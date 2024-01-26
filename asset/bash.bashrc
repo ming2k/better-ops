@@ -17,3 +17,6 @@ function bash_prompt {
 PROMPT_COMMAND=bash_prompt
 
 alias ls='ls --color=auto'
+
+export TERM=linux
+export TERMINFO=/etc/terminfo
