@@ -1,5 +1,7 @@
 #!/bin/bash
 
+debian_script_path="$script_path/debian"
+
 if [ "$(get_distribution)" = "debian" ]; then
     . ${debian_script_path}/config-network.sh
     . ${debian_script_path}/install-pkg.sh
