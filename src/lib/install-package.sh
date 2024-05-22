@@ -13,8 +13,6 @@ install_package() {
         log "Password is asked to install package."
     fi
 
-    if
-
     case "$1" in
         "apt")
             dpkg -l | grep -q -w "^ii  $2 " && log "$2 has installed." & return 0
