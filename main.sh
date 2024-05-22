@@ -1,26 +1,31 @@
 #!/bin/bash
 
-# check whether the shell is "bash"
+# 检查是否使用 bash 运行脚本
 if [ "$SHELL" != "/bin/bash" ]; then
-    log error "Please use bash to execute the script."
-    return 1
+    echo "error: Please use bash to execute the script."
+    exit 1
 fi
 
-(
-    root_path=$(dirname "$(readlink -f "$0")")
-    asset_path=$root_path/asset
-    lib_path=$root_path/lib
+# 获取脚本所在的目录
+root_path=$(dirname "$(readlink -f "$0")")
+asset_path="$root_path/asset"
+debian_script_path="$script_path/debian"
 
-    script_path=$root_path/script
-    debian_script_path=$script_path/debian
+lib_path="$root_path/lib"
+# 导入 lib_path 目录下的所有 .sh 文件
+for file in "$lib_path"/*.sh; do
+    if [ -f "$file" ]; then
+        . "$file"
+    else
+        echo "warning: No .sh files found in $lib_path"
+    fi
+done
 
-    for file in "$lib_path"/*.sh; do
-        if [ -f "$file" ]; then
-            . "$file"
-        fi
-    done
-
-    . "$script_path"/release.sh
-
-)
-
+script_path="$root_path/script"
+# 导入 release.sh 脚本
+if [ -f "$script_path/release.sh" ]; then
+    . "$script_path/release.sh"
+else
+    echo "error: $script_path/release.sh not found"
+    exit 1
+fi
