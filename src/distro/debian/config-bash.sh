@@ -22,7 +22,8 @@ log "Successfully configured bash-completion."
 # bash fzf
 install_package apt fzf
 cat >> /etc/bash.bashrc <<'EOF'
-[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] \\
-  && source /usr/share/doc/fzf/examples/key-bindings.bash >> /etc/bash.bashrc
+
+[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] &&
+    source /usr/share/doc/fzf/examples/key-bindings.bash >> /etc/bash.bashrc
 EOF
 log "Successfully configured fzf."
