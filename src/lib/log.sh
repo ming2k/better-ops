@@ -26,7 +26,7 @@ log() {
         ;;
     esac
   else
-    echo "Invalid number of arguments"
+    echo -e "[$timestamp] [\e[33mWARN\e[0m] Invalid number of arguments"
     return
   fi
 

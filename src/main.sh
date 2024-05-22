@@ -2,7 +2,7 @@
 
 # check if the current shell is running bash and exit if not
 if [ "$SHELL" != "/bin/bash" ]; then
-    echo "error: Please use bash to execute the script."
+    echo -e "[$(date "+%Y-%m-%d %H:%M:%S")] [\e[33mWARN\e[0m] Invalid number of arguments"
     exit 1
 fi
 
