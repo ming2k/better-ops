@@ -15,7 +15,7 @@ install_package() {
 
     case "$1" in
         "apt")
-            dpkg -l | grep -q -w "^ii  $2 " && {log "$2 has installed."; return 0}
+            dpkg -l | grep -q -w "^ii  $2 " && { log "$2 has installed."; return 0; }
             sudo apt-get update > /dev/null
             sudo apt-get install -y "$2" > /dev/null
             ;;
