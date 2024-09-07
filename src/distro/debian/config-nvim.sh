@@ -4,17 +4,9 @@ print_with_border "SETTING NVIM"
 
 install_package apt neovim
 
-vimrc_path=/usr/share/nvim/sysinit.vim
-
-#sudo echo << EOF >> /etc/profile.d/nvim.sh
-#alias vi=nvim
-#alias vim=nvim
-#
-#export VIM=/usr/share/nvim
-#export EDITOR=nvim
-#EOF
+git clone -b offline https://github.com/ming2k/nvim-config.git ~/.config/nvim
 
 sudo rm $vimrc_path
 sudo cat $asset_path/sysinit.vim > $vimrc_path
 
-sudo echo -e "\nexport EDITOR=nvim" >> /etc/bash.bashrc
+echo -e "\nexport EDITOR=nvim" >> ~/.bashrc && . ~/.bashrc

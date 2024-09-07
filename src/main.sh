@@ -1,5 +1,11 @@
 #!/bin/bash
 
+####################
+# PRESET KEY VALUE #
+####################
+
+PUB_KEY_URL=https://github.com/ming2k.keys
+
 # check if the current shell is running bash and exit if not
 if [ "$SHELL" != "/bin/bash" ]; then
     echo -e "[$(date "+%Y-%m-%d %H:%M:%S")] [\e[33mWARN\e[0m] Invalid number of arguments"
