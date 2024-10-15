@@ -1,6 +1,6 @@
 #!/bin/bash
 
-print_with_border "SETTING NETWORK"
+print_with_border "SETTING DOCKER"
 
 # Install dependencies
 install_package ca-certificates curl
