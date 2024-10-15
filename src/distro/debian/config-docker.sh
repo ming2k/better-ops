@@ -3,7 +3,7 @@
 print_with_border "SETTING NETWORK"
 
 # Install dependencies
-install_package apt ca-certificates curl
+install_package ca-certificates curl
 # Add Docker's official GPG key:
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
@@ -16,4 +16,4 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 
-install_package apt docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+install_package docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin

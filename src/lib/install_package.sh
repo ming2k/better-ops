@@ -2,17 +2,30 @@
 
 # Function to install packages
 install_package() {
-    # Check if at least two arguments are provided (package manager and at least one package)
-    if [ $# -lt 2 ]; then
-        log "error" "Please specify the package management tool and at least one package name."
+    # Check if at least one package is specified
+    if [ $# -lt 1 ]; then
+        log "error" "Please specify at least one package name."
         return 1
     fi
 
-    # Extract the package manager from the first argument
-    package_manager=$1
-    shift  # Remove the first argument (package manager)
+    # Determine package manager based on DIST_OS
+    case "$DIST_OS" in
+        "ubuntu"|"debian")
+            package_manager="apt"
+            ;;
+        "centos"|"rhel"|"fedora")
+            package_manager="yum"
+            ;;
+        "arch"|"manjaro")
+            package_manager="pacman"
+            ;;
+        *)
+            log "error" "Unsupported distribution: $DIST_OS"
+            return 1
+            ;;
+    esac
 
-    # Install packages based on the specified package manager
+    # Install packages based on the determined package manager
     case "$package_manager" in
         "apt")
             # Update repository for apt
@@ -56,17 +69,8 @@ install_package() {
                 fi
             done
             ;;
-        *)
-            # Error message for unsupported package managers
-            log "error" "The package management tool is not supported."
-            return 1
-            ;;
     esac
 }
 
-# Usage examples:
-# install_package apt package1 package2 package3
-# or
-# install_package yum package1 package2 package3
-# or
-# install_package pacman package1 package2 package3
+# Usage example:
+# install_package package1 package2 package3

@@ -8,16 +8,17 @@ print_with_border "SETTING BASH"
 mv ~/.bashrc ~/.bashrc.bak && cp $asset_path/.bashrc ~/.bashrc
 
 # bash complete
-install_package apt bash-completion
+install_package bash-completion
 sudo cat << EOF >> ~/.bashrc
 
 [[ \$PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
     . /usr/share/bash-completion/bash_completion
 EOF
+
 log "Successfully configured bash-completion."
 
 # bash fzf
-install_package apt fzf
+install_package fzf
 cat >> ~/.bashrc <<'EOF'
 
 [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] &&

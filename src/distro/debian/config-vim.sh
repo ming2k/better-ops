@@ -2,7 +2,7 @@
 
 print_with_border "SETTING VIM"
 
-install_package apt vim
+install_package vim
 log "Vim installation completed."
 
 vimrc_path=/etc/vim/vimrc

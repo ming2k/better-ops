@@ -2,7 +2,7 @@
 
 print_with_border "SETTING NVIM"
 
-install_package apt neovim
+install_package neovim
 
 git clone -b offline https://github.com/ming2k/nvim-config.git ~/.config/nvim
 
