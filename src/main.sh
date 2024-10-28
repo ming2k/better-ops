@@ -14,7 +14,7 @@ fi
 
 # get the current file absolute path
 script_path=$(dirname "$(readlink -f "$0")")
-asset_path="$script_path/asset"
+asset_path="$script_path/assets"
 
 # active the library
 lib_path="$script_path/lib"
