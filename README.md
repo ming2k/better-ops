@@ -4,12 +4,28 @@ The project is aim to use the script to automatically install the common utils a
 
 ## Which Distro the Project support?
 
-| Distribution | Available | 
-| - | - |
-| Debian | YES |
+| Distribution  | Available | 
+| -             | -         |
+| Debian        | YES       |
 
-## How to Use the Scripts
+## Prerequist
+
+### Install Package
 
 ```sh
-./src/main.sh
+apt install git sudo
+```
+
+## Get Started
+
+Clone the repository and navigate to the project directory:
+
+```sh
+git clone https://github.com/ming2k/better-ops.git && cd better-ops
+```
+
+Execute the script:
+
+```sh
+./bin/main.sh
 ```
