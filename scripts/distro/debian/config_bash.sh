@@ -5,8 +5,14 @@
 print_with_border "SETTING BASH"
 
 # backup .bashrc and .bash_profile
-if [ -f ~/.bashrc ]; then mv ~/.bashrc ~/.bashrc.bak && cp $asset_path/bash_config/.bashrc ~/.bashrc
-if [ -f ~/.bash_profile ]; then mv ~/.bash_profile ~/.bash_profile.bak && cp $asset_path/bash_config/.bash_profile ~/.bash_profile
+if [ -f ~/.bashrc ]; 
+    then mv ~/.bashrc ~/.bashrc.bak
+fi
+cp $asset_path/bash_config/.bashrc ~/.bashrc
+if [ -f ~/.bash_profile ]; then 
+    mv ~/.bash_profile ~/.bash_profile.bak
+fi
+cp $asset_path/bash_config/.bash_profile ~/.bash_profile
 
 # bash complete
 install_package bash-completion
@@ -34,5 +40,7 @@ source ~/.bashrc.d/fzf.bash
 EOF
 log "Successfully configured fzf."
 
-. ~/.bash_profile
 log "Already souced '.bash_profile'."
+
+. ~/.bash_profile
+. ~/.bashrc
