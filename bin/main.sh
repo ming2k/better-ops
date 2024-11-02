@@ -10,7 +10,7 @@ fi
 parent_dir=$(dirname "$(dirname "$(readlink -f "$0")")")
 script_path="$parent_dir/scripts"
 lib_path="$parent_dir/lib"
-asset_path="$script_path/assets"
+asset_path="$parent_dir/assets"
 
 # active the library
 . $lib_path/log.sh
