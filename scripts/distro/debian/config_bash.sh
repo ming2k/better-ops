@@ -5,8 +5,8 @@
 print_with_border "SETTING BASH"
 
 # backup .bashrc and .bash_profile
-mv ~/.bashrc ~/.bashrc.bak && cp $asset_path/.bashrc ~/.bashrc
-mv ~/.bash_profile ~/.bash_profile.bak && cp $asset_path/.bash_profile ~/.bash_profile
+mv ~/.bashrc ~/.bashrc.bak && cp $asset_path/bash_config/.bashrc ~/.bashrc
+mv ~/.bash_profile ~/.bash_profile.bak && cp $asset_path/bash_config/.bash_profile ~/.bash_profile
 
 # bash complete
 install_package bash-completion
@@ -27,7 +27,7 @@ fi
 
 # bash fzf
 install_package fzf
-cp $asset_path/fzf.bash ~/.bashrc.d/fzf.bash
+cp $asset_path/bash_config/fzf.bash ~/.bashrc.d/fzf.bash
 cat >> ~/.bashrc <<'EOF'
 
 source ~/.bashrc.d/fzf.bash
