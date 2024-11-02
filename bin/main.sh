@@ -31,4 +31,7 @@ if [ $DIST_OS = "debian" ]; then
     . ${debian_script_path}/config_docker.sh
 fi
 
+source /etc/profile
 source /etc/bash.bashrc
+source ~/.bash_profile
+source ~/.bashrc
