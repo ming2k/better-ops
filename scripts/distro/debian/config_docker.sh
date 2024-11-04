@@ -12,8 +12,6 @@ install_package ca-certificates curl gnupg
 
 # Add Docker's official GPG key:
 sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
 
 # Check if the user is in China
 if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
@@ -38,7 +36,9 @@ if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
     sudo systemctl restart docker
 else
     echo "Using Docker's official repository."
-    
+    sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
     # Add the repository to Apt sources:
     echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
