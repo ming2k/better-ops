@@ -19,6 +19,10 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
     echo "Detected user in China. Configuring Docker with Alibaba Cloud registry."
 
+    # Remove existing Alibaba Cloud GPG key
+    if [ ! -f /etc/apt/keyrings/alibaba.gpg ]; then
+        sudo rm -f /etc/apt/keyrings/alibaba.gpg
+    fi
     # Import Alibaba Cloud GPG key
     curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/alibaba.gpg
 
@@ -31,7 +35,7 @@ if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
     # Configure Docker to use Alibaba Cloud registry mirror
     sudo mkdir -p /etc/docker
     echo '{
-      "registry-mirrors": ["https://<your-alibaba-cloud-mirror>", "https://registry.docker-cn.com"]
+      "registry-mirrors": [ "https://docker.m.daocloud.io", "https://docker.jianmuhub.com", "https://huecker.io", "https://dockerhub.timeweb.cloud", "https://dockerhub1.beget.com", "https://noohub.ru"]
     }' | sudo tee /etc/docker/daemon.json > /dev/null
 
     # Restart Docker service to apply changes
