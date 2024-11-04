@@ -15,7 +15,7 @@ sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# Check if the user is in China (can be improved based on your network checks)
+# Check if the user is in China
 if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
     echo "Detected user in China. Configuring Docker with Alibaba Cloud registry."
 
@@ -28,10 +28,10 @@ if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-    # Optional: Configure Docker to use the Alibaba Cloud registry
+    # Configure Docker to use Alibaba Cloud registry mirror
     sudo mkdir -p /etc/docker
     echo '{
-      "registry-mirrors": ["https://<your-alibaba-cloud-mirror>"]
+      "registry-mirrors": ["https://<your-alibaba-cloud-mirror>", "https://registry.docker-cn.com"]
     }' | sudo tee /etc/docker/daemon.json > /dev/null
 
     # Restart Docker service to apply changes
