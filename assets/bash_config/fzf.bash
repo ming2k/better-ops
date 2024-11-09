@@ -1,6 +1,13 @@
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)"
 
+if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+        source /usr/share/doc/fzf/examples/key-bindings.bash
+fi
+if [ -f /usr/share/fzf/examples/completion.bash ]; then
+        source /usr/share/doc/fzf/examples/completion.bash
+fi
+
 alias fzfp="fzf \
         --preview 'fzf-preview.sh {}' \
         --preview-window '~1:+{2}/2:noborder'"

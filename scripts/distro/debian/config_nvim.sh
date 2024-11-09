@@ -8,18 +8,17 @@ print_with_border "SETTING NVIM"
 install_package neovim
 
 # 设置路径
-asset_path="$(dirname "$0")/../assets/nvim_config"
 nvim_config_dir="$HOME/.config/nvim"
 
 # 创建 Neovim 配置目录（如果不存在）
 mkdir -p "$nvim_config_dir"
 
 # 复制所有配置文件
-if [ -d "$asset_path" ]; then
-    cp -R "$asset_path"/* "$nvim_config_dir/"
+if [ -d "$ASSET_DIR" ]; then
+    cp -R "$ASSET_DIR"/* "$nvim_config_dir/"
     echo "Neovim configuration files copied successfully."
 else
-    echo "Error: Neovim configuration directory not found at $asset_path"
+    echo "Error: Neovim configuration directory not found at $ASSET_DIR"
     exit 1
 fi
 
