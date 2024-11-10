@@ -1,5 +1,4 @@
 # Set up fzf key bindings and fuzzy completion
-eval "$(fzf --bash)"
 
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
         source /usr/share/doc/fzf/examples/key-bindings.bash
