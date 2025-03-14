@@ -18,20 +18,22 @@ ASSET_DIR="$PROJECT_ROOT/assets"
 . $LIB_DIR/install_package.sh
 . $LIB_DIR/generate_banner.sh
 
-DIST_OS=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}')
+# DIST_OS=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}')
+DIST_OS=$(get_distribution)
 
 # exec the scripts
-DEBIAN_SCRIPT_PATH="$SCRIPT_DIR/ubuntu"
+UBUNTU_SCRIPT_PATH="$SCRIPT_DIR/ubuntu"
 if [ $DIST_OS = "ubuntu" ]; then
-    . ${DEBIAN_SCRIPT_PATH}/preflight.sh
-    . ${DEBIAN_SCRIPT_PATH}/config_network.sh
-    . ${DEBIAN_SCRIPT_PATH}/config_bash.sh
-    . ${DEBIAN_SCRIPT_PATH}/config_ssh.sh
-    . ${DEBIAN_SCRIPT_PATH}/config_nvim.sh
-    . ${DEBIAN_SCRIPT_PATH}/config_docker.sh
+    . ${UBUNTU_SCRIPT_PATH}/preflight.sh
+    . ${UBUNTU_SCRIPT_PATH}/config_network.sh
+    . ${UBUNTU_SCRIPT_PATH}/config_bash.sh
+    . ${UBUNTU_SCRIPT_PATH}/config_ssh.sh
+    . ${UBUNTU_SCRIPT_PATH}/config_nvim.sh
+    . ${UBUNTU_SCRIPT_PATH}/config_docker.sh
 fi
 
 source /etc/profile
 source /etc/bash.bashrc
 # source ~/.bash_profile
 source ~/.bashrc
+
