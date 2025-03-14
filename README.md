@@ -6,7 +6,7 @@ The project is aim to use the script to automatically install the common utils a
 
 | Distribution  | Available | 
 | -             | -         |
-| Debian        | YES       |
+| Ubuntu        | YES       |
 
 ## Prerequist
 

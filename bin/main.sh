@@ -18,11 +18,11 @@ ASSET_DIR="$PROJECT_ROOT/assets"
 . $LIB_DIR/install_package.sh
 . $LIB_DIR/generate_banner.sh
 
-DIST_OS=$(get_distribution)
+DIST_OS=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}')
 
 # exec the scripts
 DEBIAN_SCRIPT_PATH="$SCRIPT_DIR/distro/debian"
-if [ $DIST_OS = "debian" ]; then
+if [ $DIST_OS = "ubuntu" ]; then
     . ${DEBIAN_SCRIPT_PATH}/preflight.sh
     . ${DEBIAN_SCRIPT_PATH}/config_network.sh
     . ${DEBIAN_SCRIPT_PATH}/config_bash.sh
