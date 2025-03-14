@@ -21,7 +21,7 @@ ASSET_DIR="$PROJECT_ROOT/assets"
 DIST_OS=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}')
 
 # exec the scripts
-DEBIAN_SCRIPT_PATH="$SCRIPT_DIR/distro/debian"
+DEBIAN_SCRIPT_PATH="$SCRIPT_DIR/ubuntu"
 if [ $DIST_OS = "ubuntu" ]; then
     . ${DEBIAN_SCRIPT_PATH}/preflight.sh
     . ${DEBIAN_SCRIPT_PATH}/config_network.sh
