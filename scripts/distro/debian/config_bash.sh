@@ -9,10 +9,6 @@ if [ -f ~/.bashrc ];
     then mv ~/.bashrc ~/.bashrc.bak
 fi
 cp $ASSET_DIR/bash_config/.bashrc ~/.bashrc
-if [ -f ~/.bash_profile ]; then 
-    mv ~/.bash_profile ~/.bash_profile.bak
-fi
-cp $ASSET_DIR/bash_config/.bash_profile ~/.bash_profile
 
 # bash complete
 install_package bash-completion
@@ -40,8 +36,12 @@ source ~/.bashrc.d/fzf.bash
 EOF
 log "Successfully configured fzf."
 
-log "Already souced '.bash_profile'."
 
-. ~/.bash_profile
 . ~/.bashrc
 
+# if [ -f ~/.bash_profile ]; then 
+#     mv ~/.bash_profile ~/.bash_profile.bak
+# fi
+# cp $ASSET_DIR/bash_config/.bash_profile ~/.bash_profile
+# . ~/.bash_profile
+# log "Already souced '.bash_profile'."

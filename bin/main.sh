@@ -33,5 +33,5 @@ fi
 
 source /etc/profile
 source /etc/bash.bashrc
-source ~/.bash_profile
+# source ~/.bash_profile
 source ~/.bashrc
