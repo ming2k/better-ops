@@ -1,9 +1,10 @@
 #!/bin/bash
 
-source $LIB_DIR/init-path.sh
-source $LIB_DIR/generate-banner.sh
+PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+source $PROJECT_ROOT/lib/banner-generator.sh
+source $PROJECT_ROOT/lib/log.sh
 
-generate-banner "SETTING NETWORK"
+generate_banner "SETTING NETWORK"
 
 hostname=$(hostname)
 file_path=/etc/hosts

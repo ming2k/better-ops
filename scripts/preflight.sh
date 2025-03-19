@@ -1,9 +1,10 @@
 #!/bin/bash
 
-source $LIB_DIR/init-path.sh
-source $LIB_DIR/generate-banner.sh
-source $LIB_DIR/install_package.sh
+PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+source $PROJECT_ROOT/lib/banner-generator.sh
+source $PROJECT_ROOT/lib/log.sh
+source $PROJECT_ROOT/lib/install_package.sh
 
-generate-banner "EXEC PREFLIGHT CHECK"
+generate_banner "EXEC PREFLIGHT CHECK"
 
 install_package sudo build-essential rsync curl wget git

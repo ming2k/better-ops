@@ -1,10 +1,11 @@
 #!/bin/bash
 
-source $LIB_DIR/init-path.sh
-source $LIB_DIR/generate-banner.sh
-source $LIB_DIR/install_package.sh
+PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+source $PROJECT_ROOT/lib/banner-generator.sh
+source $PROJECT_ROOT/lib/log.sh
+source $PROJECT_ROOT/lib/install_package.sh
 
-generate-banner "SETTING BASH"
+generate_banner "SETTING BASH"
 
 # Bashrc
 # ---------------------
@@ -13,7 +14,7 @@ if [ -f ~/.bashrc ];
     then mv ~/.bashrc ~/.bashrc.bak
 fi
 
-cp $ASSET_DIR/bash_config/.bashrc ~/.bashrc
+cp $PROJECT_ROOT/assets/bash_config/.bashrc ~/.bashrc
 
 # Bash completion
 # ---------------------
@@ -35,7 +36,7 @@ fi
 
 # bash fzf
 install_package fzf
-cp $ASSET_DIR/bash_config/.bash/fzf.bash ~/.bash/fzf.bash
+cp $PROJECT_ROOT/assets/bash_config/.bash/fzf.bash ~/.bash/fzf.bash
 cat >> ~/.bashrc <<'EOF'
 
 source ~/.bash/fzf.bash

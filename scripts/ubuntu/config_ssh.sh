@@ -1,7 +1,8 @@
 #!/bin/bash
 
-source $LIB_DIR/init-path.sh
-source $LIB_DIR/generate-banner.sh
+PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+source $PROJECT_ROOT/lib/init-path.sh
+source $PROJECT_ROOT/lib/generate-banner.sh
 
 generate-banner "SETTING SSH"
 

@@ -1,10 +1,11 @@
 #!/bin/bash
 
-source $LIB_DIR/init-path.sh
-source $LIB_DIR/generate-banner.sh
-source $LIB_DIR/install_package.sh
+PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+source $PROJECT_ROOT/lib/banner-generator.sh
+source $PROJECT_ROOT/lib/log.sh
+source $PROJECT_ROOT/lib/install_package.sh
 
-generate-banner "SETTING DOCKER ON UBUNTU"
+generate_banner "SETTING DOCKER ON UBUNTU"
 
 # Function to install packages
 install_package() {
@@ -39,7 +40,7 @@ install_package docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 
 # Check if the user is in China and configure mirrors if needed
 if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
-  echo "Detected user in China. Configuring Docker with mirror registries."
+  log "Detected user in China. Configuring Docker with mirror registries."
 
   # Configure Docker to use mirror registries
   sudo mkdir -p /etc/docker
@@ -51,4 +52,4 @@ if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
   sudo systemctl restart docker
 fi
 
-generate-banner "DOCKER INSTALLATION COMPLETE"
+generate_banner "DOCKER INSTALLATION COMPLETE"
