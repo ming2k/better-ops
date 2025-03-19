@@ -1,16 +1,22 @@
 #!/bin/bash
 
-# DON'T MDODIFY THE HOME BASHRC, LEFT THE CHOICE TO USER 
+source $LIB_DIR/init-path.sh
+source $LIB_DIR/generate-banner.sh
+source $LIB_DIR/install_package.sh
 
-print_with_border "SETTING BASH"
+generate-banner "SETTING BASH"
 
+# Bashrc
+# ---------------------
 # backup .bashrc and .bash_profile
 if [ -f ~/.bashrc ]; 
     then mv ~/.bashrc ~/.bashrc.bak
 fi
+
 cp $ASSET_DIR/bash_config/.bashrc ~/.bashrc
 
-# bash complete
+# Bash completion
+# ---------------------
 install_package bash-completion
 # add bash completion support
 cat << 'EOF' >> ~/.bashrc
@@ -23,25 +29,18 @@ EOF
 log "Successfully configured bash-completion."
 
 # if bashrc.d does not exist, create it
-if [ ! -d ~/.bashrc.d ]; then
-    mkdir ~/.bashrc.d
+if [ ! -d ~/.bash ]; then
+    mkdir ~/.bash
 fi
 
 # bash fzf
 install_package fzf
-cp $ASSET_DIR/bash_config/fzf.bash ~/.bashrc.d/fzf.bash
+cp $ASSET_DIR/bash_config/.bash/fzf.bash ~/.bash/fzf.bash
 cat >> ~/.bashrc <<'EOF'
 
-source ~/.bashrc.d/fzf.bash
+source ~/.bash/fzf.bash
 EOF
 log "Successfully configured fzf."
 
-
-. ~/.bashrc
-
-# if [ -f ~/.bash_profile ]; then 
-#     mv ~/.bash_profile ~/.bash_profile.bak
-# fi
-# cp $ASSET_DIR/bash_config/.bash_profile ~/.bash_profile
-# . ~/.bash_profile
-# log "Already souced '.bash_profile'."
+# Let profile include source the bashrc
+source /etc/profile

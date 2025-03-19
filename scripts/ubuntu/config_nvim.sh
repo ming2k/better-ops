@@ -1,8 +1,10 @@
 #!/bin/bash
 
-# 假设 print_with_border 和 install_package 函数已经在其他地方定义
+source $LIB_DIR/init-path.sh
+source $LIB_DIR/generate-banner.sh
+source $LIB_DIR/install_package.sh
 
-print_with_border "SETTING NVIM"
+generate-banner "SETTING NVIM"
 
 # 安装 Neovim
 install_package neovim

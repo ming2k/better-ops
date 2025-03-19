@@ -1,6 +1,10 @@
 #!/bin/bash
 
-print_with_border "SETTING DOCKER ON UBUNTU"
+source $LIB_DIR/init-path.sh
+source $LIB_DIR/generate-banner.sh
+source $LIB_DIR/install_package.sh
+
+generate-banner "SETTING DOCKER ON UBUNTU"
 
 # Function to install packages
 install_package() {
@@ -47,4 +51,4 @@ if [[ $(curl -s https://ipinfo.io/country) == "CN" ]]; then
   sudo systemctl restart docker
 fi
 
-print_with_border "DOCKER INSTALLATION COMPLETE"
+generate-banner "DOCKER INSTALLATION COMPLETE"

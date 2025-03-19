@@ -1,6 +1,9 @@
 #!/bin/bash
 
-print_with_border "SETTING NETWORK"
+source $LIB_DIR/init-path.sh
+source $LIB_DIR/generate-banner.sh
+
+generate-banner "SETTING NETWORK"
 
 hostname=$(hostname)
 file_path=/etc/hosts
