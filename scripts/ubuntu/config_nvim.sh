@@ -7,9 +7,9 @@ source $PROJECT_ROOT/lib/log.sh
 generate_banner "SETTING NVIM"
 
 # Use PPA to install newer Neovim
-sudo add-apt-repository ppa:neovim-ppa/stable
+sudo add-apt-repository ppa:neovim-ppa/stable -y
 sudo apt-get update
-sudo apt-get install neovim
+sudo apt-get install neovim -y
 
 # Setup Neovim config directory
 nvim_config_dir="$HOME/.config/nvim"
