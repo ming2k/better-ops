@@ -1,6 +1,7 @@
 -- Generated init.lua
 
-require("logger")
-require("utils")
 require("general")
+require("appearance")
+require("statusline")
 require("filetype")
+require("fold")

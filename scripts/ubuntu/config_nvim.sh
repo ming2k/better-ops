@@ -3,20 +3,28 @@
 PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
 source $PROJECT_ROOT/lib/banner-generator.sh
 source $PROJECT_ROOT/lib/log.sh
-source $PROJECT_ROOT/lib/install_package.sh
 
 generate_banner "SETTING NVIM"
 
-# 安装 Neovim
-install_package neovim
+# Use PPA to install newer Neovim
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
 
-# 设置路径
+# Setup Neovim config directory
 nvim_config_dir="$HOME/.config/nvim"
 
-# 创建 Neovim 配置目录（如果不存在）
-mkdir -p "$nvim_config_dir"
+# Create Neovim config directory (if it doesn't exist)
+if [ ! -d "$nvim_config_dir" ]; then
+    mkdir -p "$nvim_config_dir"
+fi
 
-# 复制所有配置文件
+# Move existing config to backup directory
+if [ -d "$nvim_config_dir" ]; then
+    mv "$nvim_config_dir" "$nvim_config_dir.bak"
+fi
+
+# Copy all config
 if [ -d "$PROJECT_ROOT/assets/nvim_config" ]; then
     cp -R "$PROJECT_ROOT/assets/nvim_config/"* "$nvim_config_dir/"
     log "Neovim configuration files copied successfully."
@@ -25,7 +33,7 @@ else
     exit 1
 fi
 
-# 设置 EDITOR 环境变量
+# Setup EDITOR environment variable
 if ! grep -q "export EDITOR=nvim" ~/.bashrc; then
     echo -e "\nexport EDITOR=nvim" >> ~/.bashrc
     log "EDITOR environment variable set to nvim in ~/.bashrc"
@@ -33,7 +41,7 @@ else
     log "EDITOR environment variable already set to nvim in ~/.bashrc"
 fi
 
-# 重新加载 .bashrc
+# Reload .bashrc
 source ~/.bashrc
 
 log "Neovim setup completed."

@@ -30,7 +30,7 @@ install_package() {
         "apt")
             # Update repository for apt
             sudo apt-get update > /dev/null
-            log "The repository was updated."
+            log "The package repository was updated."
             # Install each specified package
             for package in "$@"; do
                 if dpkg -l | grep -q -w "^ii  $package "; then
@@ -44,7 +44,7 @@ install_package() {
         "yum")
             # Update repository for yum
             sudo yum makecache > /dev/null
-            log "The repository was updated."
+            log "The package repository was updated."
             # Install each specified package
             for package in "$@"; do
                 if rpm -q "$package" > /dev/null 2>&1; then
@@ -58,7 +58,7 @@ install_package() {
         "pacman")
             # Update repository for pacman
             sudo pacman -Syyu --noconfirm > /dev/null
-            log "The repository was updated."
+            log "The package repository was updated."
             # Install each specified package
             for package in "$@"; do
                 if pacman -Qi "$package" > /dev/null 2>&1; then

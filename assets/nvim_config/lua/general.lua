@@ -1,8 +1,13 @@
 vim.opt.encoding = "utf-8"
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
+if vim.g.neovide then
+    vim.g.neovide_cursor_animation_length = 0.01
+    vim.g.neovide_cursor_trail_length = 0.01
+end
+
+-- Enable GUI colors
+vim.o.termguicolors = true
+
 vim.g.mapleader = "\\"
 -- vim.g.maplocalleader = "\\"
 
@@ -12,15 +17,8 @@ vim.opt.expandtab = false
 vim.opt.softtabstop = 4
 vim.opt.smarttab = true
 
-vim.opt.colorcolumn = "80"
-
--- Enable LSP fold
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.o.foldcolumn = "1" -- '0' is not bad
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
+-- Disable line wrapping
+vim.opt.wrap = false
 
 -- Set the time in milliseconds to wait before triggering the CursorHold event
 vim.opt.updatetime = 200
@@ -44,9 +42,9 @@ vim.opt.wrap = false
 vim.opt.showcmd = true
 vim.opt.cmdheight = 1
 
--- 行号设置
-vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.number = true   -- Show line number
+-- Enable relative line numbers for convenient nearby line jumps
+vim.opt.relativenumber = true    
 
 -- config status bar
 -- vim.opt.laststatus = 2
@@ -55,8 +53,7 @@ vim.opt.relativenumber = true
 -- enable mouse
 vim.opt.mouse = "a"
 
--- 设置隐藏缓冲区
-vim.opt.hidden = true
+vim.opt.hidden = true -- Enable buffer hidden t
 
 -- Time in milliseconds to wait for a mapped sequence to complete.
 vim.opt.timeoutlen = 1000
@@ -74,16 +71,6 @@ vim.lsp.set_log_level("debug")
 vim.o.completeopt = "menuone,noselect"
 vim.o.wildmenu = true
 vim.o.wildmode = "longest:full,full"
-
--- remember fold
-vim.api.nvim_create_autocmd({"BufWinLeave"}, {
-  pattern = {"*.*"},
-  command = "mkview",
-})
-vim.api.nvim_create_autocmd({"BufWinEnter"}, {
-  pattern = {"*.*"},
-  command = "silent! loadview",
-})
 
 -- remember the cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {

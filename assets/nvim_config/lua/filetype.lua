@@ -1,8 +1,10 @@
 -- Config behavior by filetypes
 
--- config file type of gentoo portage config file
+-- Assign types for unrecognized file types
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   pattern = {
+    -- Gentoo Portage Conf
+    -- ----
     "/etc/portage/package.use",
     "/etc/portage/package.mask",
     "/etc/portage/package.unmask",
@@ -15,29 +17,64 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
     "/etc/portage/package.unmask/*",
     "/etc/portage/package.accept_keywords/*",
     "/etc/portage/package.license/*",
-    "/etc/portage/package.env/*"
+    "/etc/portage/package.env/*",
+    -- Dae
+    -- -----
+    "/etc/dae/config.dae"
   },
   callback = function()
     vim.bo.filetype = "conf"
   end
 })
 
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
+-- Set manual fold method for txt and conf files
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "text", "conf" },
+    callback = function()
+        vim.opt_local.foldmethod = "manual"
+        -- hint column
+        -- vim.opt.colorcolumn = "80"
+    end
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function() 
+    vim.opt.wrap = true
+  end,
+
+})
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "json",
-  command = "setlocal ts=2 sts=2 sw=2 expandtab",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+  end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
-  command = "setlocal ts=2 sts=2 sw=2 expandtab",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = true
+  end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "c",
-  command = "setlocal ts=4 sts=4 sw=4 expandtab",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+  end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "jsx", "tsx" },
   callback = function()
@@ -47,11 +84,9 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.expandtab = true
   end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "ebuild",
   command = "setlocal ts=4 sts=4 sw=4 expandtab",
 })
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown",
-  command = "setlocal wrap linebreak",
-})
+
