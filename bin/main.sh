@@ -19,13 +19,25 @@ SCRIPT_DIR="$PROJECT_ROOT/scripts"
 # ---------------------
 . ${SCRIPT_DIR}/preflight.sh
 
-# Config scripts
+# Scripts
 # ---------------------
+
+# Script paths to compose a pool of scripts
+COMMON_SCRIPT_PATH="$SCRIPT_DIR/common"
 UBUNTU_SCRIPT_PATH="$SCRIPT_DIR/ubuntu"
+DEBIAN_SCRIPT_PATH="$SCRIPT_DIR/debian"
+
+if [ "$DIST_OS" = "debian" ]; then
+    . ${COMMON_SCRIPT_PATH}/setup-network.sh
+    . ${COMMON_SCRIPT_PATH}/setup-ssh.sh
+    . ${COMMON_SCRIPT_PATH}/setup-bash.sh
+    . ${COMMON_SCRIPT_PATH}/setup-nvim.sh
+fi
+
 if [ "$DIST_OS" = "ubuntu" ]; then
-    . ${UBUNTU_SCRIPT_PATH}/config_network.sh
-    . ${UBUNTU_SCRIPT_PATH}/config_bash.sh
-    . ${UBUNTU_SCRIPT_PATH}/config_ssh.sh
-    . ${UBUNTU_SCRIPT_PATH}/config_nvim.sh
-    # . ${UBUNTU_SCRIPT_PATH}/config_docker.sh
+    . ${COMMON_SCRIPT_PATH}/setup-network.sh
+    . ${COMMON_SCRIPT_PATH}/setup-bash.sh
+    . ${COMMON_SCRIPT_PATH}/setup-ssh.sh
+    . ${COMMON_SCRIPT_PATH}/setup-nvim.sh
+    # . ${UBUNTU_SCRIPT_PATH}/setup-docker.sh
 fi
