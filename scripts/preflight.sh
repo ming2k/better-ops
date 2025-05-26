@@ -7,4 +7,5 @@ source $PROJECT_ROOT/lib/install_package.sh
 
 generate_banner "EXEC PREFLIGHT CHECK"
 
-install_package sudo build-essential rsync curl wget git
+install_package build-essential rsync curl wget git man-db
+
