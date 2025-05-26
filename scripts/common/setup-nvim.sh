@@ -7,13 +7,12 @@ source $PROJECT_ROOT/lib/log.sh
 generate_banner "SETTING NVIM"
 
 NVIM_VERSION="0.11.1"
-URL="https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-arm64.appimage"
+URL="https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-x86_64.appimage"
 wget $URL -O /usr/local/bin/nvim
 chmod u+x /usr/local/bin/nvim
 
 # Setup Neovim config directory
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
-
 
 # Create Neovim config directory (if it doesn't exist)
 if [ ! -d "$NVIM_CONFIG_DIR" ]; then
@@ -26,11 +25,11 @@ if [ -d "$NVIM_CONFIG_DIR" ]; then
 fi
 
 # Copy all config
-if [ -d "$PROJECT_ROOT/assets/nvim_config" ]; then
-    cp -R "$PROJECT_ROOT/assets/nvim_config/"* "$NVIM_CONFIG_DIR/"
+if [ -d "$PROJECT_ROOT/assets/nvim" ]; then
+    cp -R "$PROJECT_ROOT/assets/nvim/"* "$NVIM_CONFIG_DIR/"
     log "Neovim configuration files copied successfully."
 else
-    log "error" "Error: Neovim configuration directory not found at $PROJECT_ROOT/assets/nvim_config"
+    log "error" "Error: Neovim configuration directory not found at $PROJECT_ROOT/assets/nvim"
     exit 1
 fi
 
