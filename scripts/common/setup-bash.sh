@@ -10,11 +10,10 @@ generate_banner "SETTING BASH"
 # Bashrc
 # ---------------------
 # backup .bashrc and .bash_profile
-if [ -f ~/.bashrc ]; 
-    then mv ~/.bashrc ~/.bashrc.bak
-fi
+[ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.bak
+[ -f ~/.bash_profile ] && mv ~/.bash_profile ~/.bash_profile.bak
 
-cp $PROJECT_ROOT/assets/bash_config/.bashrc ~/.bashrc
+cp $PROJECT_ROOT/assets/bash_config/.bash ~/.bashrc
 
 # Bash completion
 # ---------------------
