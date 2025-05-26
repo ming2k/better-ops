@@ -15,29 +15,23 @@ source $PROJECT_ROOT/lib/get-distribution.sh
 DIST_OS=$(get_distribution)
 SCRIPT_DIR="$PROJECT_ROOT/scripts"
 
-# Preflight check   
-# ---------------------
+# Preflight check
+# -------------------
 . ${SCRIPT_DIR}/preflight.sh
 
 # Scripts
 # ---------------------
-
-# Script paths to compose a pool of scripts
-COMMON_SCRIPT_PATH="$SCRIPT_DIR/common"
-UBUNTU_SCRIPT_PATH="$SCRIPT_DIR/ubuntu"
-DEBIAN_SCRIPT_PATH="$SCRIPT_DIR/debian"
-
 if [ "$DIST_OS" = "debian" ]; then
-    . ${COMMON_SCRIPT_PATH}/setup-network.sh
-    . ${COMMON_SCRIPT_PATH}/setup-ssh.sh
-    . ${COMMON_SCRIPT_PATH}/setup-bash.sh
-    . ${COMMON_SCRIPT_PATH}/setup-nvim.sh
+    . ${SCRIPT_DIR}/setup/network.sh
+    . ${SCRIPT_DIR}/setup/ssh.sh
+    . ${SCRIPT_DIR}/setup/bash.sh
+    . ${SCRIPT_DIR}/setup/nvim.sh
 fi
 
 if [ "$DIST_OS" = "ubuntu" ]; then
-    . ${COMMON_SCRIPT_PATH}/setup-network.sh
-    . ${COMMON_SCRIPT_PATH}/setup-bash.sh
-    . ${COMMON_SCRIPT_PATH}/setup-ssh.sh
-    . ${COMMON_SCRIPT_PATH}/setup-nvim.sh
-    # . ${UBUNTU_SCRIPT_PATH}/setup-docker.sh
+    . ${SCRIPT_DIR}/setup/network.sh
+    . ${SCRIPT_DIR}/setup/bash.sh
+    . ${SCRIPT_DIR}/setup/ssh.sh
+    . ${SCRIPT_DIR}/setup/nvim.sh
+    . ${SCRIPT_DIR}/setup/docker-on-ubuntu.sh
 fi

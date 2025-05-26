@@ -3,7 +3,7 @@
 PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
 source $PROJECT_ROOT/lib/banner-generator.sh
 source $PROJECT_ROOT/lib/log.sh
-source $PROJECT_ROOT/lib/install_package.sh
+source $PROJECT_ROOT/lib/install-package.sh
 
 generate_banner "SETTING DOCKER ON UBUNTU"
 

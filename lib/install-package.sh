@@ -2,7 +2,6 @@ install_package() {
     # Validate input
     [ $# -lt 1 ] && { log "error" "Please specify at least one package name."; return 1; }
     
-    # Determine privilege escalation method
     if [ "$EUID" -eq 0 ]; then
         SUDO_CMD=""
     elif command -v sudo >/dev/null 2>&1; then
