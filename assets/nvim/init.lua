@@ -1,6 +1,11 @@
--- Generated init.lua
+-- vim.cmd("packadd tokyonight.nvim")
+-- vim.cmd[[colorscheme tokyonight]]
 
 require("general")
-require("appearance")
-require("filetype")
 require("fold")
+require("lsp")
+-- require("plugin_loader")
+
+-- require("themes.dark-statusline")
+-- require("supress-xdg-open-timeout")
+
