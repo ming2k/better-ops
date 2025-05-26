@@ -10,6 +10,7 @@ NVIM_VERSION="0.11.1"
 URL="https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-x86_64.appimage"
 wget $URL -O /usr/local/bin/nvim
 chmod u+x /usr/local/bin/nvim
+hash -d nvim # Clear the hash table for nvim to ensure the new binary is recognized
 
 # Setup Neovim config directory
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
