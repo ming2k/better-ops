@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+PROJECT_ROOT=$(dirname "$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")")
 source $PROJECT_ROOT/lib/banner-generator.sh
 source $PROJECT_ROOT/lib/log.sh
 

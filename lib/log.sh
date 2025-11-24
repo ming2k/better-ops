@@ -20,6 +20,10 @@ log() {
         level="\e[32mINFO\e[0m"  # 绿色表示
         message="$2"
         ;;
+      success)
+        level="\e[32mSUCCESS\e[0m"  # 绿色表示
+        message="$2"
+        ;;
       *)
         echo "Invalid log level: $1"
         return

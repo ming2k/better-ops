@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+PROJECT_ROOT=$(dirname "$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")")
 source $PROJECT_ROOT/lib/common.sh
 source $PROJECT_ROOT/lib/install-package.sh
 
@@ -26,15 +26,19 @@ cp -r $PROJECT_ROOT/config/bash/.bash/* ~/.bash/
 # Bash completion
 # ---------------------
 install_package bash-completion
-# add bash completion support
-cat << 'EOF' >> ~/.bashrc
+# Add bash completion support (only if not already present)
+if ! grep -q "bash-completion" ~/.bashrc; then
+    cat << 'EOF' >> ~/.bashrc
 
 # Enable bash-completion if available
 if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
     source /usr/share/bash-completion/bash_completion
 fi
 EOF
-log "Successfully configured bash-completion."
+    log "Added bash-completion to .bashrc"
+else
+    log "bash-completion already configured in .bashrc"
+fi
 
 # bash fzf (only if not already copied)
 install_package fzf

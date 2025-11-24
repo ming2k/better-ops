@@ -14,6 +14,7 @@ All operations serve better VPS management, committed to simplicity and efficien
 | Distribution | Status |
 |--------------|--------|
 | Debian 12    | Passed |
+| Debian 13    | Passed |
 
 ## Quick Start
 
@@ -33,3 +34,7 @@ Install:
 # Run complete setup
 ./bin/main.sh
 ```
+
+## Development
+
+For development setup, testing, and contributing, see [DEVELOPMENT.md](DEVELOPMENT.md).
