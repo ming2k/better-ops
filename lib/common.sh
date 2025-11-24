@@ -31,6 +31,9 @@ backup_file() {
         local backup_file="${file}.better-ops-backup.$(date +%Y%m%d-%H%M%S)"
         cp "$file" "$backup_file"
         log "Backed up $file to $backup_file"
+
+        # Ensure config directory exists before writing backups.list
+        create_config_dir
         echo "$backup_file" >> "$BETTER_OPS_CONFIG_DIR/backups.list"
     fi
 }
