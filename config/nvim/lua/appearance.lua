@@ -19,7 +19,7 @@ if is_getty() then
     -- })
 else
     -- Use your preferred colorscheme for graphical terminals
-    vim.opt.background = "light"
+    vim.opt.background = "dark"
     vim.api.nvim_set_hl(0, 'Visual', {
         bg = '#3c4c6d',
         fg = '#f0f0f0',
