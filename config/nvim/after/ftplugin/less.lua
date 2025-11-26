@@ -1,4 +1,4 @@
--- Indentation settings for JSON with Comments
+-- Indentation settings for LESS
 vim.bo.tabstop = 2
 vim.bo.softtabstop = 2
 vim.bo.shiftwidth = 2

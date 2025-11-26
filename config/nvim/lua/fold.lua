@@ -1,12 +1,10 @@
 vim.opt.foldenable = true
--- Enable folding using Treesitter expression
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()' 
+-- Use indent-based folding (no plugins required)
+vim.opt.foldmethod = 'indent'
 -- Keep all folds open by default
-vim.opt.foldlevel = 99   
+vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
--- Set to "0" to hide the fold column
--- Set to "1" to show fold indicators
+-- Hide fold column for cleaner look
 vim.opt.foldcolumn = "0" 
 
 -- Automatically save fold states when leaving a buffer

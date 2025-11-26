@@ -1,11 +1,15 @@
--- vim.cmd("packadd tokyonight.nvim")
--- vim.cmd[[colorscheme tokyonight]]
+-- Neovim Configuration
+-- Lightweight, offline-ready, no external dependencies
 
+-- Core settings
 require("general")
-require("fold")
-require("lsp")
--- require("plugin_loader")
 
--- require("themes.dark-statusline")
--- require("supress-xdg-open-timeout")
+-- Appearance and visual settings
+require("appearance")
+
+-- Folding configuration
+require("fold")
+
+-- Filetype-specific settings
+require("filetype")
 

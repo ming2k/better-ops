@@ -23,10 +23,6 @@ vim.opt.wrap = false
 -- Set the time in milliseconds to wait before triggering the CursorHold event
 vim.opt.updatetime = 200
 
--- diagnostic
--- vim.api.nvim_set_keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 8
@@ -58,16 +54,7 @@ vim.opt.hidden = true -- Enable buffer hidden t
 -- Time in milliseconds to wait for a mapped sequence to complete.
 vim.opt.timeoutlen = 1000
 
--- Optional: Display line diagnostics automatically in hover window
-vim.cmd([[
-  autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
-vim.diagnostic.config({
-  virtual_text = false,
-})
-vim.lsp.set_log_level("debug")
-
--- cmp behavior
+-- completion behavior
 vim.o.completeopt = "menuone,noselect"
 vim.o.wildmenu = true
 vim.o.wildmode = "longest:full,full"
