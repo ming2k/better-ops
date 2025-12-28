@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# check if the current shell is running bash and exit if not
-if [ "$SHELL" != "/bin/bash" ]; then
-    echo -e "[$(date "+%Y-%m-%d %H:%M:%S")] [\e[33mWARN\e[0m] Invalid shell: $SHELL"
+# Check if running with bash
+if [ -z "$BASH_VERSION" ]; then
+    echo -e "[$(date "+%Y-%m-%d %H:%M:%S")] [\e[31mERROR\e[0m] This script requires bash"
     exit 1
 fi
 

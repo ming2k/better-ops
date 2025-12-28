@@ -24,9 +24,7 @@ better-ops/
 │   └── bash/               # Bash configuration files
 │       ├── .bashrc         # Main bashrc
 │       └── .bash/          # Additional bash assets
-├── scripts/
-│   └── dev-container.sh    # Development container script
-└── Dockerfile              # Test environment definition
+└── Dockerfile              # Development environment
 ```
 
 ## Core Scripts
@@ -92,127 +90,6 @@ cp config/bash/.bashrc ~/.bashrc
 cp -r config/bash/.bash/* ~/.bash/
 ```
 
-## Development Workflow
-
-### 1. Adding a New Setup Module
-
-Create `lib/setup/newmodule.sh`:
-
-```bash
-#!/bin/bash
-
-PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
-source $PROJECT_ROOT/lib/common.sh
-source $PROJECT_ROOT/lib/install-package.sh
-
-generate_banner "SETTING NEW MODULE"
-
-# Backup existing configs
-backup_file ~/.newmodulerc
-
-# Install packages
-install_package package-name
-
-# Copy configurations
-cp $PROJECT_ROOT/config/newmodule/.newmodulerc ~/.newmodulerc
-
-log "Successfully configured new module."
-```
-
-Then add to `bin/main.sh`:
-```bash
-if [ "$DIST_OS" = "debian" ]; then
-    . ${PROJECT_ROOT}/lib/setup/newmodule.sh
-fi
-```
-
-### 2. Modifying Configurations
-
-Configuration files are in `config/`:
-- Edit the source files in `config/`
-- Test using the container workflow (see below)
-- Configurations are copied to user's home during installation
-
-### 3. Adding Utility Functions
-
-Add shared functions to `lib/common.sh`:
-```bash
-# Example function
-my_util_function() {
-    local param="$1"
-    log "Processing $param"
-    # ... implementation
-}
-```
-
-## Testing
-
-### Development Container
-
-The `scripts/dev-container.sh` script provides an easy way to develop and test better-ops configurations in a containerized environment without affecting your host system.
-
-#### Prerequisites
-
-- Docker or Podman installed on your system
-- The interactive test script will automatically detect which container runtime is available
-
-#### Usage
-
-1. **Run the development container:**
-   ```bash
-   ./scripts/dev-container.sh
-   ```
-
-2. **What the script does:**
-   - Detects available container runtime (Docker or Podman)
-   - Builds a test container using the project's Dockerfile
-   - Starts an interactive container with:
-     - Current project directory mounted at `/better-ops`
-     - Clean Debian 12 environment
-     - Test user with sudo privileges
-     - Interactive bash shell
-
-3. **Inside the container:**
-   ```bash
-   # Test the main installation script
-   ./bin/main.sh
-
-   # Test individual components
-   source lib/setup/bash.sh
-   source lib/setup/nvim.sh
-
-   # Verify configurations
-   cat ~/.bashrc
-   ls -la ~/.bash/
-   ```
-
-4. **Exit the container:**
-   ```bash
-   exit
-   ```
-
-#### Container Environment Details
-
-- **Base Image:** Debian 13 Slim
-- **Test User:** `testuser` with sudo privileges
-- **Working Directory:** `/better-ops` (mounted from host)
-- **Packages:** git, sudo, curl, wget, bash
-
-#### Testing Workflow
-
-1. Make changes to configuration files
-2. Run `./scripts/dev-container.sh`
-3. Test your changes in the clean container environment
-4. Exit and repeat as needed
-
-#### Benefits
-
-- **Isolated Testing:** No risk to your host system
-- **Reproducible Environment:** Consistent Debian 13 base
-- **Quick Iteration:** Fast container startup for testing
-- **Real-time Changes:** Host directory is mounted, so changes are immediately available
-
-This approach ensures your configurations work correctly in a clean environment before deploying to production systems.
 
 ## Key Development Concepts
 
@@ -302,20 +179,119 @@ log "warn" "warning message"    # [WARN] in yellow
 log "error" "error message"     # [ERROR] in red
 ```
 
-## Dockerfile Explained
+## Development Workflow
 
-The Dockerfile creates a minimal test environment:
+### Container Development Environment
 
-```dockerfile
-FROM debian:13-slim              # Minimal Debian base
-RUN apt-get install git sudo...  # Essential tools only
-RUN useradd -m testuser          # Non-root test user
-WORKDIR /better-ops              # Project mount point
-COPY . .                         # Copy source (for build)
-USER testuser                    # Run as non-root
+Use containers to develop and test better-ops in an isolated Debian environment without affecting your host system.
+
+#### Prerequisites
+
+- Podman or Docker installed
+
+#### Usage
+
+**Build the development image:**
+```bash
+podman build -t better-ops:dev .
 ```
 
-Key design choices:
-- Uses Debian 13 (Trixie) for modern packages and testing
-- Non-root user matches real-world usage
-- Volume mount allows live editing without rebuild
+**Run the container:**
+```bash
+podman run -it --name better-ops-dev -v ./:/better-ops better-ops:dev
+```
+
+Note: Container runs as root by default, allowing scripts to install packages.
+
+**Re-enter an existing container:**
+```bash
+podman start -ai better-ops-dev
+```
+
+**Remove the container when done:**
+```bash
+podman rm better-ops-dev
+```
+
+**Inside the container:**
+```bash
+# Verify running as root
+whoami  # Should output: root
+
+# Test the full installation
+./bin/main.sh
+
+# Test individual setup modules
+source lib/setup/bash.sh
+source lib/setup/nvim.sh
+
+# Verify configurations
+cat ~/.bashrc
+ls -la ~/.bash/
+
+# Exit when done
+exit
+```
+
+#### Command Flags
+
+- `--name better-ops-dev`: Named container for easy reference
+- `-v ./:/better-ops`: Live-mounts current directory (no rebuild needed)
+- `-it`: Interactive terminal
+- Running as root: Allows package installation without pre-installed sudo
+
+#### Benefits
+
+- **Minimal base**: Truly bare Debian image, scripts install everything
+- **Fast iteration**: Changes are instant, no image rebuild required
+- **Isolated environment**: Test in clean Debian without affecting host
+- **Reproducible**: Consistent Debian base for all developers
+
+### Adding New Setup Modules
+
+Create `lib/setup/newmodule.sh`:
+
+```bash
+#!/bin/bash
+
+PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+source $PROJECT_ROOT/lib/common.sh
+source $PROJECT_ROOT/lib/install-package.sh
+
+generate_banner "SETTING NEW MODULE"
+
+# Backup existing configs
+backup_file ~/.newmodulerc
+
+# Install packages
+install_package package-name
+
+# Copy configurations
+cp $PROJECT_ROOT/config/newmodule/.newmodulerc ~/.newmodulerc
+
+log "Successfully configured new module."
+```
+
+Then add to `bin/main.sh`:
+```bash
+if [ "$DIST_OS" = "debian" ]; then
+    . ${PROJECT_ROOT}/lib/setup/newmodule.sh
+fi
+```
+
+## Dockerfile Architecture
+
+The Dockerfile is truly minimal:
+
+```dockerfile
+FROM debian:trixie-slim          # Bare Debian base
+WORKDIR /better-ops              # Project mount point
+```
+
+**Design principles:**
+- **Bare minimum**: Only base image and working directory
+- **POSIX-compliant**: Uses base image's default shell
+- **Scripts handle everything**: All tools installed by setup scripts
+- **No COPY**: Source code mounted at runtime
+- **Fast iteration**: Code changes don't require rebuild
+

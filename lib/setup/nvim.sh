@@ -8,21 +8,22 @@ generate_banner "SETTING NVIM"
 
 NVIM_VERSION="v0.11.1"
 URL="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.appimage"
+NVIM_PATH="/usr/local/bin/nvim"
 
 # Check if Neovim is already installed with correct version
-if [ -f /usr/local/bin/nvim ]; then
-    CURRENT_VERSION=$(/usr/local/bin/nvim --version 2>/dev/null | head -n 1 | awk '{print $2}')
+if [ -f "$NVIM_PATH" ]; then
+    CURRENT_VERSION=$("$NVIM_PATH" --version 2>/dev/null | head -n 1 | awk '{print $2}')
     if [ "$CURRENT_VERSION" == "$NVIM_VERSION" ]; then
         log "Neovim version $NVIM_VERSION is already installed."
     else
         log "Updating Neovim from version $CURRENT_VERSION to $NVIM_VERSION."
-        wget -q $URL -O /usr/local/bin/nvim
-        chmod u+x /usr/local/bin/nvim
+        sudo wget -q "$URL" -O "$NVIM_PATH"
+        sudo chmod u+x "$NVIM_PATH"
     fi
 else
     log "Installing Neovim version $NVIM_VERSION."
-    wget -q $URL -O /usr/local/bin/nvim
-    chmod u+x /usr/local/bin/nvim
+    sudo wget -q "$URL" -O "$NVIM_PATH"
+    sudo chmod u+x "$NVIM_PATH"
 fi
 
 # Clear the hash table for nvim to ensure the new binary is recognized

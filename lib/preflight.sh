@@ -13,5 +13,5 @@ fi
 
 generate_banner "EXEC PREFLIGHT CHECK"
 
-install_package sudo
-install_package build-essential rsync curl wget git man-db
+install_package bash sudo
+install_package build-essential rsync curl wget git man-db fuse3

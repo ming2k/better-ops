@@ -49,5 +49,20 @@ if [ ! -f ~/.bash/tools/fzf.bash ]; then
 fi
 log "Successfully configured fzf."
 
-# Let profile include source the bashrc
-source /etc/profile
+# Set bash as default shell for current user
+if command -v chsh >/dev/null 2>&1; then
+    sudo chsh -s /bin/bash "$USER" 2>/dev/null || chsh -s /bin/bash
+    log "Set bash as default shell for $USER"
+else
+    log "warn" "chsh not available, cannot set default shell"
+fi
+
+# Set bash as default shell for new users
+if [ -f /etc/default/useradd ]; then
+    sudo sed -i 's|^SHELL=.*|SHELL=/bin/bash|' /etc/default/useradd 2>/dev/null || true
+    log "Set bash as default shell for new users"
+fi
+
+# Reload bash configuration
+log "Bash configuration complete. Reloading shell..."
+exec bash
