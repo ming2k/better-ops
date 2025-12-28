@@ -27,70 +27,6 @@ better-ops/
 └── Dockerfile              # Development environment
 ```
 
-## Core Scripts
-
-### Entry Point: `bin/main.sh`
-
-The main installation script that:
-1. Validates the shell is bash
-2. Detects the distribution using `get_distribution()`
-3. Runs preflight checks (installs essential packages)
-4. Executes setup modules based on the detected OS
-
-Key features:
-- Sources library modules dynamically
-- Distribution-specific installation paths (Debian/Ubuntu)
-- Modular setup execution
-
-### Library Modules: `lib/`
-
-**`common.sh`** - Shared functionality:
-- `create_config_dir()` - Creates `~/.config/better-ops`
-- `backup_file()` - Backs up files with timestamps
-- `is_container()` - Detects container environments
-- `check_command()` - Validates command availability
-- `validate_file_content()` - Content validation
-- `get_system_info()` - Generates system information
-
-**`preflight.sh`** - Pre-installation:
-- Installs essential packages: sudo, build-essential, rsync, curl, wget, git, man-db
-- Installs fuse3/libfuse3-3 for AppImage support
-
-**`install-package.sh`** - Package management wrapper:
-- Abstraction layer for apt/yum/pacman
-- Automatic distribution detection
-
-**`log.sh`** - Logging:
-- Color-coded log levels (info, warn, error)
-- Timestamp prefixes
-
-**`banner-generator.sh`** - Visual feedback:
-- Generates ASCII banners for setup stages
-
-**`get-distribution.sh`** - OS detection:
-- Identifies Debian, Ubuntu, and other distributions
-
-### Setup Modules: `lib/setup/`
-
-Each module follows a standard pattern:
-1. Source common libraries
-2. Generate banner
-3. Backup existing configurations
-4. Install packages
-5. Copy configuration files
-6. Validate installation
-
-**Example flow (`bash.sh`):**
-```bash
-source lib/common.sh
-generate_banner "SETTING BASH"
-backup_file ~/.bashrc
-install_package bash-completion
-cp config/bash/.bashrc ~/.bashrc
-cp -r config/bash/.bash/* ~/.bash/
-```
-
-
 ## Key Development Concepts
 
 ### Idempotency
@@ -141,14 +77,6 @@ cp -r config/bash/.bash/* ~/.bash/
    BACKUP="$FILE.bak.$(date +%Y%m%d-%H%M%S)"
    mv "$FILE" "$BACKUP"
    ```
-
-#### Testing Idempotency:
-
-```bash
-# Run setup twice - should not error or duplicate
-./bin/main.sh
-./bin/main.sh  # Should skip already-configured items
-```
 
 ### Backup Strategy
 
@@ -247,51 +175,49 @@ exit
 - **Isolated environment**: Test in clean Debian without affecting host
 - **Reproducible**: Consistent Debian base for all developers
 
-### Adding New Setup Modules
+#### Security Considerations
 
-Create `lib/setup/newmodule.sh`:
+**Container Development Risks:**
 
-```bash
-#!/bin/bash
+While containers provide isolation, running development containers carries security risks you should be aware of:
 
-PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
-source $PROJECT_ROOT/lib/common.sh
-source $PROJECT_ROOT/lib/install-package.sh
+1. **Running as Root**
+   - Our setup runs containers as root for simplicity (to install packages without pre-configuring sudo)
+   - Root in container = elevated privileges that could potentially affect the host
+   - If compromised, root access may facilitate container escape attacks
 
-generate_banner "SETTING NEW MODULE"
+2. **Container Escape Risks**
+   - Container escape vulnerabilities exist in container runtimes (Docker, Podman)
+   - Even with rootless containers, escape risks are not eliminated completely
+   - Kernel vulnerabilities or misconfigurations can be exploited
+   - Volume mounts (`-v`) can be attack vectors if not carefully managed
 
-# Backup existing configs
-backup_file ~/.newmodulerc
+3. **Recommendations**
 
-# Install packages
-install_package package-name
+   **Use Rootless Containers (Recommended):**
+   ```bash
+   # Run Podman in rootless mode (default for non-root users)
+   podman run -it --name better-ops-dev -v ./:/better-ops better-ops:dev
+   ```
 
-# Copy configurations
-cp $PROJECT_ROOT/config/newmodule/.newmodulerc ~/.newmodulerc
+   Rootless containers:
+   - Run without root privileges on the host
+   - Provide additional security layer through user namespace isolation
+   - Limit potential damage from container escape
+   - Are the default mode for Podman when run as non-root user
 
-log "Successfully configured new module."
-```
+   **Additional Best Practices:**
+   - Only mount necessary directories (avoid mounting entire filesystem)
+   - Don't run untrusted code in development containers
+   - Keep container runtime (Podman/Docker) updated
+   - Use separate containers for different projects
+   - Don't store sensitive credentials in containers or mounted volumes
+   - Consider using read-only mounts when possible: `-v ./:/better-ops:ro`
 
-Then add to `bin/main.sh`:
-```bash
-if [ "$DIST_OS" = "debian" ]; then
-    . ${PROJECT_ROOT}/lib/setup/newmodule.sh
-fi
-```
+4. **Trade-offs**
+   - **Convenience vs Security**: Running as root simplifies package installation but increases risk
+   - **Development vs Production**: These risks are more acceptable in local development than production
+   - **Isolation vs Access**: Volume mounts enable development workflow but create potential attack surface
 
-## Dockerfile Architecture
-
-The Dockerfile is truly minimal:
-
-```dockerfile
-FROM debian:trixie-slim          # Bare Debian base
-WORKDIR /better-ops              # Project mount point
-```
-
-**Design principles:**
-- **Bare minimum**: Only base image and working directory
-- **POSIX-compliant**: Uses base image's default shell
-- **Scripts handle everything**: All tools installed by setup scripts
-- **No COPY**: Source code mounted at runtime
-- **Fast iteration**: Code changes don't require rebuild
+**Note:** This setup prioritizes development convenience. For production deployments or handling sensitive data, implement additional security hardening measures.
 
