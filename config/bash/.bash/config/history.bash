@@ -27,4 +27,4 @@ shopt -s histappend
 shopt -s cmdhist
 
 # Save history immediately after each command
-# PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"

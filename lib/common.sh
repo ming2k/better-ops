@@ -96,3 +96,70 @@ Shell: $SHELL
 Container: $(is_container && echo "Yes" || echo "No")
 EOF
 }
+
+# Get target users for config installation (root + original user if using sudo)
+get_target_users() {
+    local users=()
+    users+=("$(whoami)")
+    if [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
+        users+=("$SUDO_USER")
+    fi
+    printf '%s\n' "${users[@]}" | sort -u
+}
+
+# Get home directory for a given user
+get_user_home() {
+    local user="$1"
+    if [ "$user" = "root" ]; then
+        echo "/root"
+    else
+        echo "/home/$user"
+    fi
+}
+
+# Install config directory for a specific user
+install_config_for_user() {
+    local user="$1"
+    local source_dir="$2"
+    local dest_relative="$3"
+    local user_home=$(get_user_home "$user")
+    local dest_dir="$user_home/$dest_relative"
+
+    [ ! -d "$source_dir" ] && { log "error" "Source directory $source_dir does not exist"; return 1; }
+
+    mkdir -p "$dest_dir"
+    cp -r "$source_dir"/* "$dest_dir/"
+    [ "$user" != "root" ] && chown -R "$user:$user" "$dest_dir"
+    log "Installed config to $dest_dir for user $user"
+}
+
+# Install a single file for a specific user
+install_file_for_user() {
+    local user="$1"
+    local source_file="$2"
+    local dest_relative="$3"
+    local user_home=$(get_user_home "$user")
+    local dest_file="$user_home/$dest_relative"
+
+    [ ! -f "$source_file" ] && { log "error" "Source file $source_file does not exist"; return 1; }
+
+    mkdir -p "$(dirname "$dest_file")"
+    cp "$source_file" "$dest_file"
+    [ "$user" != "root" ] && chown "$user:$user" "$dest_file"
+    log "Installed $dest_file for user $user"
+}
+
+# Backup file for a specific user
+backup_file_for_user() {
+    local user="$1"
+    local file_relative="$2"
+    local user_home=$(get_user_home "$user")
+    local file="$user_home/$file_relative"
+
+    if [ -f "$file" ]; then
+        local backup_file="${file}.better-ops-backup.$(date +%Y%m%d-%H%M%S)"
+        cp "$file" "$backup_file"
+        [ "$user" != "root" ] && chown "$user:$user" "$backup_file"
+        log "Backed up $file to $backup_file"
+    fi
+}

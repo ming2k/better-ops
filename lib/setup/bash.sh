@@ -6,63 +6,62 @@ source $PROJECT_ROOT/lib/install-package.sh
 
 generate_banner "SETTING BASH"
 
-# Bashrc
-# ---------------------
-# backup existing configurations
-backup_file ~/.bashrc
-backup_file ~/.bash_profile
-
-# Install custom bashrc
-cp $PROJECT_ROOT/config/bash/.bashrc ~/.bashrc
-
-# Copy bash configuration files
-if [ ! -d ~/.bash ]; then
-    mkdir -p ~/.bash
-fi
-
-# Copy all bash assets
-cp -r $PROJECT_ROOT/config/bash/.bash/* ~/.bash/
-
-# Bash completion
-# ---------------------
+# Install packages first (system-wide)
 install_package bash-completion
-# Add bash completion support (only if not already present)
-if ! grep -q "bash-completion" ~/.bashrc; then
-    cat << 'EOF' >> ~/.bashrc
+install_package fzf
+
+# Get target users (root + original user if using sudo)
+TARGET_USERS=$(get_target_users)
+
+# Install bash config for each target user
+for user in $TARGET_USERS; do
+    log "Installing bash configuration for user: $user"
+    user_home=$(get_user_home "$user")
+
+    # Backup existing configurations
+    backup_file_for_user "$user" ".bashrc"
+    backup_file_for_user "$user" ".bash_profile"
+
+    # Install custom bashrc
+    install_file_for_user "$user" "$PROJECT_ROOT/config/bash/.bashrc" ".bashrc"
+
+    # Install bash config directory
+    install_config_for_user "$user" "$PROJECT_ROOT/config/bash/.bash" ".bash"
+
+    # Add bash completion support (only if not already present)
+    if ! grep -q "bash-completion" "$user_home/.bashrc"; then
+        cat << 'EOF' >> "$user_home/.bashrc"
 
 # Enable bash-completion if available
 if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
     source /usr/share/bash-completion/bash_completion
 fi
 EOF
-    log "Added bash-completion to .bashrc"
-else
-    log "bash-completion already configured in .bashrc"
-fi
+        [ "$user" != "root" ] && chown "$user:$user" "$user_home/.bashrc"
+        log "Added bash-completion to .bashrc for $user"
+    else
+        log "bash-completion already configured in .bashrc for $user"
+    fi
 
-# bash fzf (only if not already copied)
-install_package fzf
-if [ ! -f ~/.bash/tools/fzf.bash ]; then
-    log "warn" "fzf.bash not found in assets, creating basic configuration"
-    mkdir -p ~/.bash/tools
-    echo '# FZF configuration will be loaded from system installation' > ~/.bash/tools/fzf.bash
-fi
-log "Successfully configured fzf."
+    # Ensure fzf.bash exists
+    if [ ! -f "$user_home/.bash/tools/fzf.bash" ]; then
+        mkdir -p "$user_home/.bash/tools"
+        echo '# FZF configuration will be loaded from system installation' > "$user_home/.bash/tools/fzf.bash"
+        [ "$user" != "root" ] && chown -R "$user:$user" "$user_home/.bash/tools"
+        log "warn" "Created basic fzf.bash for $user"
+    fi
 
-# Set bash as default shell for current user
-if command -v chsh >/dev/null 2>&1; then
-    sudo chsh -s /bin/bash "$USER" 2>/dev/null || chsh -s /bin/bash
-    log "Set bash as default shell for $USER"
-else
-    log "warn" "chsh not available, cannot set default shell"
-fi
+    # Set bash as default shell for user
+    if command -v chsh >/dev/null 2>&1; then
+        chsh -s /bin/bash "$user" 2>/dev/null || true
+        log "Set bash as default shell for $user"
+    fi
+done
 
 # Set bash as default shell for new users
 if [ -f /etc/default/useradd ]; then
-    sudo sed -i 's|^SHELL=.*|SHELL=/bin/bash|' /etc/default/useradd 2>/dev/null || true
+    sed -i 's|^SHELL=.*|SHELL=/bin/bash|' /etc/default/useradd 2>/dev/null || true
     log "Set bash as default shell for new users"
 fi
 
-# Reload bash configuration
-log "Bash configuration complete. Reloading shell..."
-exec bash
+log "Bash configuration complete for all users."
