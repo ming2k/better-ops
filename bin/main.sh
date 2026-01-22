@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Check if running with bash
 if [ -z "$BASH_VERSION" ]; then
@@ -6,10 +7,13 @@ if [ -z "$BASH_VERSION" ]; then
     exit 1
 fi
 
-PROJECT_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
-source $PROJECT_ROOT/lib/banner-generator.sh
-source $PROJECT_ROOT/lib/log.sh
-source $PROJECT_ROOT/lib/get-distribution.sh
+# Initialize project root and environment
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+source "$SCRIPT_DIR/../lib/init.sh"
+
+source "$PROJECT_ROOT/lib/banner-generator.sh"
+source "$PROJECT_ROOT/lib/log.sh"
+source "$PROJECT_ROOT/lib/get-distribution.sh"
 
 # Get distribution
 DIST_OS=$(get_distribution)
@@ -17,22 +21,22 @@ SCRIPT_DIR="$PROJECT_ROOT/scripts"
 
 # Preflight check
 # -------------------
-. ${PROJECT_ROOT}/lib/preflight.sh
+. "${PROJECT_ROOT}/lib/preflight.sh"
 
 # Scripts
 # ---------------------
 if [ "$DIST_OS" = "debian" ]; then
-    . ${PROJECT_ROOT}/lib/setup/timezone.sh
-    . ${PROJECT_ROOT}/lib/setup/network.sh
-    . ${PROJECT_ROOT}/lib/setup/ssh.sh
-    . ${PROJECT_ROOT}/lib/setup/bash.sh
-    . ${PROJECT_ROOT}/lib/setup/nvim.sh
+    . "${PROJECT_ROOT}/lib/setup/timezone.sh"
+    . "${PROJECT_ROOT}/lib/setup/network.sh"
+    . "${PROJECT_ROOT}/lib/setup/ssh.sh"
+    . "${PROJECT_ROOT}/lib/setup/bash.sh"
+    . "${PROJECT_ROOT}/lib/setup/nvim.sh"
 fi
 
 if [ "$DIST_OS" = "ubuntu" ]; then
-    . ${PROJECT_ROOT}/lib/setup/timezone.sh
-    . ${PROJECT_ROOT}/lib/setup/network.sh
-    . ${PROJECT_ROOT}/lib/setup/bash.sh
-    . ${PROJECT_ROOT}/lib/setup/ssh.sh
-    . ${PROJECT_ROOT}/lib/setup/nvim.sh
+    . "${PROJECT_ROOT}/lib/setup/timezone.sh"
+    . "${PROJECT_ROOT}/lib/setup/network.sh"
+    . "${PROJECT_ROOT}/lib/setup/bash.sh"
+    . "${PROJECT_ROOT}/lib/setup/ssh.sh"
+    . "${PROJECT_ROOT}/lib/setup/nvim.sh"
 fi

@@ -1,8 +1,14 @@
 #!/bin/bash
+set -euo pipefail
 
-PROJECT_ROOT=$(dirname "$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")")
-source $PROJECT_ROOT/lib/common.sh
-source $PROJECT_ROOT/lib/install-package.sh
+# Initialize project root if not already set
+if [ -z "${PROJECT_ROOT:-}" ]; then
+    SCRIPT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+    source "$SCRIPT_DIR/../init.sh"
+fi
+
+source "$PROJECT_ROOT/lib/common.sh"
+source "$PROJECT_ROOT/lib/install-package.sh"
 
 generate_banner "SETTING BASH"
 

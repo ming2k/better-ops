@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 generate_banner() {
   str="$1"

@@ -1,3 +1,21 @@
+#!/bin/bash
+set -euo pipefail
+
+#######################################
+# Log a message with timestamp and optional level indicator
+# Arguments:
+#   $1 - (Optional) Log level: error, warn, info, success
+#        If only one argument, treated as message with INFO level
+#   $2 - Message to log (if level is provided)
+# Outputs:
+#   Formatted log message with timestamp and colored level to stdout
+# Examples:
+#   log "Starting installation"
+#   log "info" "Configuration loaded"
+#   log "warn" "Configuration file not found, using defaults"
+#   log "error" "Failed to connect to server"
+#   log "success" "Installation completed"
+#######################################
 log() {
   local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
   local level=""

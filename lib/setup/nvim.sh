@@ -1,13 +1,47 @@
 #!/bin/bash
+set -euo pipefail
 
-PROJECT_ROOT=$(dirname "$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")")
-source $PROJECT_ROOT/lib/common.sh
+# Initialize project root if not already set
+if [ -z "${PROJECT_ROOT:-}" ]; then
+    SCRIPT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+    source "$SCRIPT_DIR/../init.sh"
+fi
+
+source "$PROJECT_ROOT/lib/common.sh"
 
 generate_banner "SETTING NVIM"
 
+# Neovim configuration (hardcoded for stability)
 NVIM_VERSION="v0.11.1"
-URL="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.appimage"
 NVIM_PATH="/usr/local/bin/nvim"
+NVIM_SHA256="7f89b0de9e74481aab58acf90cafc049fb04197c5630ddfbb8ca7abb638570da"
+URL="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.appimage"
+
+# Download and verify Neovim binary
+download_and_verify_nvim() {
+    local temp_file="$NVIM_PATH.tmp"
+
+    log "Downloading Neovim from $URL"
+    if ! sudo wget -q "$URL" -O "$temp_file"; then
+        log "error" "Failed to download Neovim from $URL"
+        return 1
+    fi
+
+    log "Verifying checksum..."
+    local actual_sha256=$(sha256sum "$temp_file" | awk '{print $1}')
+    if [ "$actual_sha256" != "$NVIM_SHA256" ]; then
+        log "error" "Checksum verification failed"
+        log "error" "Expected: $NVIM_SHA256"
+        log "error" "Got:      $actual_sha256"
+        sudo rm -f "$temp_file"
+        return 1
+    fi
+
+    sudo mv "$temp_file" "$NVIM_PATH"
+    sudo chmod u+x "$NVIM_PATH"
+    log "Neovim installed successfully"
+    return 0
+}
 
 # Install Neovim binary (system-wide)
 if [ -f "$NVIM_PATH" ]; then
@@ -16,13 +50,15 @@ if [ -f "$NVIM_PATH" ]; then
         log "Neovim version $NVIM_VERSION is already installed."
     else
         log "Updating Neovim from version $CURRENT_VERSION to $NVIM_VERSION."
-        wget -q "$URL" -O "$NVIM_PATH"
-        chmod u+x "$NVIM_PATH"
+        if ! download_and_verify_nvim; then
+            exit 1
+        fi
     fi
 else
     log "Installing Neovim version $NVIM_VERSION."
-    wget -q "$URL" -O "$NVIM_PATH"
-    chmod u+x "$NVIM_PATH"
+    if ! download_and_verify_nvim; then
+        exit 1
+    fi
 fi
 
 # Clear the hash table for nvim

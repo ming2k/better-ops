@@ -1,0 +1,9 @@
+# ShellCheck configuration for better-ops
+
+# Disable: Can't follow non-constant source
+# We use variables in source statements which is intentional
+disable=SC1090
+
+# Disable: Not following sourced files
+# We have a complex sourcing structure
+disable=SC1091

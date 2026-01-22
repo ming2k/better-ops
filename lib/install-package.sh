@@ -1,3 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+#######################################
+# Install one or more packages using the system package manager
+# Automatically detects package manager based on distribution
+# Supports: apt-get (Debian/Ubuntu), yum (CentOS/RHEL/Fedora), pacman (Arch/Manjaro)
+# Globals:
+#   DIST_OS - Distribution name (must be set before calling)
+#   EUID - User ID (to determine if sudo is needed)
+# Arguments:
+#   $@ - One or more package names to install
+# Returns:
+#   0 if all packages installed successfully or already installed
+#   1 if any package failed to install or other error occurred
+# Outputs:
+#   Log messages for each package and summary
+# Example:
+#   install_package bash sudo
+#   install_package git curl wget
+#######################################
 install_package() {
     # Validate input
     [ $# -lt 1 ] && { log "error" "Please specify at least one package name."; return 1; }
@@ -17,7 +38,7 @@ install_package() {
             PM="apt-get"
             UPDATE_CMD="update"
             INSTALL_CMD="install -y"
-            CHECK_CMD() { dpkg -l 2>/dev/null | grep -q "^ii  $1 "; }
+            CHECK_CMD() { dpkg -l "$1" 2>/dev/null | grep -q "^ii"; }
             ;;
         centos|rhel|fedora)
             PM="yum"

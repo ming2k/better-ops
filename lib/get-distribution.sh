@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 get_distribution() {
     local distribution="Unknown"
