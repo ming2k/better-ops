@@ -43,17 +43,9 @@ EOF
         log "bash-completion already configured in .bashrc for $user"
     fi
 
-    # Ensure fzf.bash exists
-    if [ ! -f "$user_home/.bash/tools/fzf.bash" ]; then
-        mkdir -p "$user_home/.bash/tools"
-        echo '# FZF configuration will be loaded from system installation' > "$user_home/.bash/tools/fzf.bash"
-        [ "$user" != "root" ] && chown -R "$user:$user" "$user_home/.bash/tools"
-        log "warn" "Created basic fzf.bash for $user"
-    fi
-
-    # Set bash as default shell for user
-    if command -v chsh >/dev/null 2>&1; then
-        chsh -s /bin/bash "$user" 2>/dev/null || true
+    # Set bash as default shell for user (use usermod to avoid interactive prompts)
+    if command -v usermod >/dev/null 2>&1; then
+        usermod -s /bin/bash "$user" 2>/dev/null || true
         log "Set bash as default shell for $user"
     fi
 done

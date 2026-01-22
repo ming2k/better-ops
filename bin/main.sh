@@ -22,6 +22,7 @@ SCRIPT_DIR="$PROJECT_ROOT/scripts"
 # Scripts
 # ---------------------
 if [ "$DIST_OS" = "debian" ]; then
+    . ${PROJECT_ROOT}/lib/setup/timezone.sh
     . ${PROJECT_ROOT}/lib/setup/network.sh
     . ${PROJECT_ROOT}/lib/setup/ssh.sh
     . ${PROJECT_ROOT}/lib/setup/bash.sh
@@ -29,6 +30,7 @@ if [ "$DIST_OS" = "debian" ]; then
 fi
 
 if [ "$DIST_OS" = "ubuntu" ]; then
+    . ${PROJECT_ROOT}/lib/setup/timezone.sh
     . ${PROJECT_ROOT}/lib/setup/network.sh
     . ${PROJECT_ROOT}/lib/setup/bash.sh
     . ${PROJECT_ROOT}/lib/setup/ssh.sh
