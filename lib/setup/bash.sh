@@ -16,11 +16,11 @@ generate_banner "SETTING BASH"
 install_package bash-completion
 install_package fzf
 
-# Get target users (root + original user if using sudo)
-TARGET_USERS=$(get_target_users)
-
-# Install bash config for each target user
-for user in $TARGET_USERS; do
+# Configure for specified user only; skip if no user given
+if [ -z "${SETUP_USER:-}" ]; then
+    log "No --user specified, skipping user configuration"
+else
+    user="$SETUP_USER"
     log "Installing bash configuration for user: $user"
     user_home=$(get_user_home "$user")
 
@@ -49,17 +49,17 @@ EOF
         log "bash-completion already configured in .bashrc for $user"
     fi
 
-    # Set bash as default shell for user (use usermod to avoid interactive prompts)
+    # Set bash as default shell for user
     if command -v usermod >/dev/null 2>&1; then
         usermod -s /bin/bash "$user" 2>/dev/null || true
         log "Set bash as default shell for $user"
     fi
-done
 
-# Set bash as default shell for new users
-if [ -f /etc/default/useradd ]; then
-    sed -i 's|^SHELL=.*|SHELL=/bin/bash|' /etc/default/useradd 2>/dev/null || true
-    log "Set bash as default shell for new users"
+    # Set bash as default shell for new users
+    if [ -f /etc/default/useradd ]; then
+        sed -i 's|^SHELL=.*|SHELL=/bin/bash|' /etc/default/useradd 2>/dev/null || true
+        log "Set bash as default shell for new users"
+    fi
+
+    log "Bash user configuration complete for $user."
 fi
-
-log "Bash configuration complete for all users."

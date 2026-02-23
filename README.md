@@ -4,10 +4,9 @@ All operations serve better VPS management, committed to simplicity and efficien
 
 ## Features
 
-- Advanced Bash Configuration: Custom aliases, functions, completions and so on
+- Zsh Configuration: Custom aliases, functions, completions, git-aware prompt, fzf integration
 - Neovim Setup: Complete configuration with plugins and language support
 - SSH Configuration: Secure SSH daemon and client setup
-
 
 ## Supported Distributions
 
@@ -15,6 +14,8 @@ All operations serve better VPS management, committed to simplicity and efficien
 |--------------|--------|
 | Debian 12    | Passed |
 | Debian 13    | Passed |
+| Ubuntu 24.04 | Passed |
+| Arch Linux   | Passed |
 
 ## Quick Start
 
@@ -24,6 +25,9 @@ Clone the project:
 # Debian/Ubuntu
 apt install git sudo
 
+# Arch
+pacman -S git sudo
+
 # Clone repository
 git clone https://github.com/ming2k/better-ops.git && cd better-ops
 ```
@@ -31,52 +35,58 @@ git clone https://github.com/ming2k/better-ops.git && cd better-ops
 Install:
 
 ```bash
-# Run complete setup
-./bin/main.sh
+# Run complete setup (packages only, no user config)
+sudo ./bin/main.sh
+
+# Run with user config
+sudo ./bin/main.sh --user <username>
+
+# Run specific modules only
+sudo ./bin/main.sh --user root --module zsh --module nvim
+```
+
+## CLI Reference
+
+```
+./bin/main.sh [--user <username>] [--module <name>] ...
+```
+
+| Flag | Description |
+|------|-------------|
+| `--user <username>` | User to install dotfiles and shell config for. If omitted, all user-level steps are skipped. |
+| `--module <name>` | Run only the named module(s). Can be repeated. If omitted, all modules run. |
+
+**Available modules:** `timezone`, `network`, `ssh`, `zsh`, `nvim`
+
+### Examples
+
+```bash
+# Full setup for user "alice"
+sudo ./bin/main.sh --user alice
+
+# Only configure zsh and nvim for root (e.g. on Arch)
+sudo ./bin/main.sh --user root --module zsh --module nvim
+
+# Install all packages system-wide, skip dotfiles
+sudo ./bin/main.sh
+
+# Override timezone
+TIMEZONE="America/New_York" sudo ./bin/main.sh --user alice
 ```
 
 ## Configuration
 
-Better-Ops can be customized using environment variables or a configuration file.
-
 ### Environment Variables
 
-Customize installation by setting environment variables before running:
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `TIMEZONE` | `Asia/Shanghai` | System timezone |
 
-```bash
-# Timezone configuration
-export TIMEZONE="America/New_York"
-
-# Run installation
-./bin/main.sh
-```
-
-**Note:** Neovim version (v0.11.1) is hardcoded for stability. If you need a different version, modify `lib/setup/nvim.sh` directly.
-
-### Configuration File
-
-Create a configuration file for persistent settings:
-
-```bash
-# Create config directory
-mkdir -p ~/.config/better-ops
-
-# Copy example configuration
-cp config/better-ops.conf.example ~/.config/better-ops/better-ops.conf
-
-# Edit configuration
-vim ~/.config/better-ops/better-ops.conf
-```
-
-See [config/better-ops.conf.example](config/better-ops.conf.example) for all available options.
+**Note:** Neovim version (v0.11.1) is hardcoded for stability. To change it, edit `lib/setup/nvim.sh` directly.
 
 ## Testing
 
-Better-Ops includes comprehensive testing tools:
-
 ### Unit Tests
-
-Run unit tests to verify core functionality:
 
 ```bash
 ./tests/run-tests.sh
@@ -84,65 +94,47 @@ Run unit tests to verify core functionality:
 
 ### Code Quality (ShellCheck)
 
-Lint all shell scripts for best practices:
-
 ```bash
 ./scripts/lint.sh
 ```
 
-Note: Requires ShellCheck to be installed:
+Install ShellCheck if needed:
 ```bash
 # Debian/Ubuntu
 sudo apt-get install shellcheck
 
-# Fedora/RHEL
-sudo dnf install ShellCheck
+# Arch
+sudo pacman -S shellcheck
 ```
 
 ### Integration Tests
-
-Run full installation in a container:
 
 ```bash
 ./tests/integration/test-full-install.sh
 ```
 
-Note: Requires Podman or Docker to be installed.
-
-## Documentation
-
-- [API Documentation](docs/API.md) - Complete function reference
-- [Troubleshooting Guide](docs/TROUBLESHOOTING.md) - Common issues and solutions
-- [Development Guide](DEVELOPMENT.md) - Development setup and contributing
+Requires Podman or Docker.
 
 ## Troubleshooting
 
-If you encounter issues:
-
-1. Check the [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
-2. Run tests: `./tests/run-tests.sh`
-3. Verify installation in a clean container: `./tests/integration/test-full-install.sh`
-4. Enable debug mode: `bash -x ./bin/main.sh`
+1. Run tests: `./tests/run-tests.sh`
+2. Enable debug mode: `bash -x ./bin/main.sh`
+3. Verify in a clean container: `./tests/integration/test-full-install.sh`
 
 Common issues:
 
 - **Package installation fails**: Check internet connection and disk space
 - **Neovim download fails**: Verify internet access to GitHub
-- **Checksum verification fails**: Retry download or verify checksum manually
-- **Permission denied**: Run with `sudo ./bin/main.sh`
-
-For detailed solutions, see [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+- **Checksum verification fails**: Retry download or check checksum in `lib/setup/nvim.sh`
+- **Permission denied**: Run with `sudo`
 
 ## Security
 
-Better-Ops follows security best practices:
-
-- ✓ All downloads are verified with SHA256 checksums
-- ✓ Backup files have restrictive permissions (600)
-- ✓ No command injection vulnerabilities
-- ✓ Proper error handling with `set -euo pipefail`
-- ✓ All variable expansions are properly quoted
+- All downloads verified with SHA256 checksums
+- Backup files have restrictive permissions (600)
+- Proper error handling with `set -euo pipefail`
+- All variable expansions are properly quoted
 
 ## Development
 
-For development setup, testing, and contributing, see [DEVELOPMENT.md](DEVELOPMENT.md).
+See [DEVELOPMENT.md](DEVELOPMENT.md) for architecture, workflow, and contributing.

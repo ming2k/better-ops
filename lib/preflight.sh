@@ -19,5 +19,9 @@ fi
 
 generate_banner "EXEC PREFLIGHT CHECK"
 
-install_package bash sudo
-install_package build-essential rsync curl wget git man-db fuse3
+# Debian/Ubuntu: wget and fuse3 are required to download and run the Neovim appimage
+if [ "$DIST_OS" = "debian" ] || [ "$DIST_OS" = "ubuntu" ]; then
+    install_package wget fuse3
+else
+    log "No preflight packages required for $DIST_OS"
+fi

@@ -71,15 +71,15 @@ install_package() {
     for package in "$@"; do
         if CHECK_CMD "$package"; then
             log "info" "$package already installed"
-            ((skipped++))
+            skipped=$((skipped + 1))
         else
             log "info" "Installing $package..."
             if $SUDO_CMD $PM $INSTALL_CMD "$package" >/dev/null 2>&1; then
                 log "success" "$package installed successfully"
-                ((installed++))
+                installed=$((installed + 1))
             else
                 log "error" "Failed to install $package"
-                ((failed++))
+                failed=$((failed + 1))
             fi
         fi
     done
