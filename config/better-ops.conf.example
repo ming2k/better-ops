@@ -1,0 +1,11 @@
+# Better-Ops Configuration File
+# Copy this file to ~/.config/better-ops/better-ops.conf to customize settings
+
+# Timezone Configuration
+# ----------------------
+# System timezone (default: Asia/Shanghai)
+# List available timezones with: timedatectl list-timezones
+#TIMEZONE="Asia/Shanghai"
+
+# Note: Neovim version is hardcoded to v0.11.1 for stability
+# If you need a different version, modify lib/setup/nvim.sh directly
