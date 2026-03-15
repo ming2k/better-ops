@@ -24,25 +24,12 @@ backup_file ".bash_profile"
 # Install shared configuration to XDG config dir
 install_config "$PROJECT_ROOT/config/shared" ".config/shell-shared"
 
-# Install custom bashrc
+# Install custom bashrc and bash_profile
+install_file "$PROJECT_ROOT/config/bash/.bash_profile" ".bash_profile"
 install_file "$PROJECT_ROOT/config/bash/.bashrc" ".bashrc"
 
 # Install bash config directory to XDG config dir
 install_config "$PROJECT_ROOT/config/bash/.bash" ".config/bash"
-
-# Add bash completion support (only if not already present)
-if ! grep -q "bash-completion" "$HOME/.bashrc"; then
-    cat << 'EOF' >> "$HOME/.bashrc"
-
-# Enable bash-completion if available
-if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
-    source /usr/share/bash-completion/bash_completion
-fi
-EOF
-    log "Added bash-completion to .bashrc"
-else
-    log "bash-completion already configured in .bashrc"
-fi
 
 # Set bash as default shell
 if command -v chsh >/dev/null 2>&1; then
